@@ -264,6 +264,10 @@ keybindings:
   - commands: ['shell-exec cmd']
     bindings: ['alt+enter']
 
+  # Open File Explorer.
+  - commands: ['shell-exec C:\Users\Rodrigo\scripts\open-explorer.bat']
+    bindings: ['alt+e']
+
   # Open a new browser window.
   - commands: ['shell-exec C:\Users\Rodrigo\scripts\open-brave.bat']
     bindings: ['alt+b']
