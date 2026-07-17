@@ -198,12 +198,22 @@ body,
 }
 
 .cpu,
-.memory {
+.memory,
+.network {
+  color: #a6e3a1;
+}
+
+.network i {
   color: #a6e3a1;
 }
 
 .cpu.high-usage,
-.memory.high-usage {
+.memory.high-usage,
+.network.offline {
+  color: #f38ba8;
+}
+
+.network.offline i {
   color: #f38ba8;
 }
 

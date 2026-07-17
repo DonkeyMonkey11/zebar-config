@@ -82,7 +82,7 @@
         function getNetworkIcon(networkOutput) {
           switch (networkOutput.defaultInterface?.type) {
             case 'ethernet':
-              return <i className="nf nf-md-ethernet_cable"></i>;
+              return <i className="nf nf-md-network"></i>;
             case 'proprietary_virtual':
               return <i className="nf nf-md-shield_lock_outline"></i>;
             case 'wifi':
@@ -105,7 +105,7 @@
               }
             default:
               return (
-                <i className="nf nf-md-wifi_strength_off_outline"></i>
+                <i className="nf nf-md-network_off"></i>
               );
           }
         }
@@ -211,6 +211,17 @@
             </div>
 
             <div className="right">
+              {output.network && (
+                <div
+                  className={`network ${!output.network.defaultInterface ? 'offline' : ''}`}
+                  title="Configurações de Rede"
+                  onClick={() => output.glazewm?.runCommand('shell-exec ms-settings:network')}
+                  style={{ cursor: 'pointer', marginRight: '20px' }}
+                >
+                  {getNetworkIcon(output.network)}
+                </div>
+              )}
+
               {output.glazewm && (
                 <>
                   {output.glazewm.isPaused && (
