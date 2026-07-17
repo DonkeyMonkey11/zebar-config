@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Custom styles. -->
+<link rel="stylesheet" type="text/css" href="./styles.css?v=6" />
+
+    <!-- Allows React to be run buildless via "text/babel" script below. -->
+    <script
+      src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"
+      integrity="sha256-aS0B0wnsaDByLfE16h4MDCP1fQFccysd1YWOcV+gbBo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+      import React, {
+        useState,
+        useEffect,
+      } from 'https://esm.sh/react@18?dev';
+      import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
+      import * as zebar from 'https://esm.sh/zebar@3.0';
+
+      const providers = zebar.createProviderGroup({
+        network: { type: 'network' },
+        glazewm: { type: 'glazewm' },
+        cpu: { type: 'cpu' },
+        date: { type: 'date', formatting: 'EEEE d MMMM', locale: 'pt-BR' },
+        time: { type: 'date', formatting: 'HH:mm', locale: 'pt-BR' },
+        battery: { type: 'battery' },
+        memory: { type: 'memory' },
+        media: { type: 'media' },
+      });
+
+      createRoot(document.getElementById('root')).render(<App />);
+
+      function App() {
+        const [output, setOutput] = useState(providers.outputMap);
+        const [powerOpen, setPowerOpen] = useState(false);
+        const [weather, setWeather] = useState(null);
+
+        useEffect(() => {
+          providers.onOutput(() => setOutput(providers.outputMap));
+        }, []);
+
+        useEffect(() => {
+          function fetchWeather() {
+            fetch('http://127.0.0.1:6125/')
+              .then(r => r.json())
+              .then(data => {
+                if (data.tempC !== null) setWeather({ tempC: data.tempC, code: data.code });
+              })
+              .catch(() => {});
+          }
+          fetchWeather();
+          const id = setInterval(fetchWeather, 60000);
+          return () => clearInterval(id);
+        }, []);
+
+        function getVisualizerColor(sessionId) {
+          const id = (sessionId || '').toLowerCase();
+          if (id.includes('spotify'))                    return '#1db954'; // verde Spotify
+          if (id.includes('brave'))                      return '#fb542b'; // laranja Brave
+          if (id.includes('zen'))                        return '#ea4335'; // vermelho Zen
+          if (id.includes('firefox'))                    return '#ff7139'; // laranja Firefox
+          if (id.includes('edge'))                       return '#0078d4'; // azul Edge
+          if (id.includes('youtube'))                    return '#ff0000'; // vermelho YouTube
+          if (id.includes('vlc'))                        return '#ff8800'; // laranja VLC
+          return 'rgba(115, 130, 175, 0.95)';                              // cor padrão
+        }
+
+        function runPower(command) {
+          output.glazewm?.runCommand(command);
+          setPowerOpen(false);
+        }
+
+        // Get icon to show for current network status.
+        function getNetworkIcon(networkOutput) {
+          switch (networkOutput.defaultInterface?.type) {
+            case 'ethernet':
+              return <i className="nf nf-md-ethernet_cable"></i>;
+            case 'proprietary_virtual':
+              return <i className="nf nf-md-shield_lock_outline"></i>;
+            case 'wifi':
+              if (networkOutput.defaultGateway?.signalStrength >= 80) {
+                return <i className="nf nf-md-wifi_strength_4"></i>;
+              } else if (
+                networkOutput.defaultGateway?.signalStrength >= 65
+              ) {
+                return <i className="nf nf-md-wifi_strength_3"></i>;
+              } else if (
+                networkOutput.defaultGateway?.signalStrength >= 40
+              ) {
+                return <i className="nf nf-md-wifi_strength_2"></i>;
+              } else if (
+                networkOutput.defaultGateway?.signalStrength >= 25
+              ) {
+                return <i className="nf nf-md-wifi_strength_1"></i>;
+              } else {
+                return <i className="nf nf-md-wifi_strength_outline"></i>;
+              }
+            default:
+              return (
+                <i className="nf nf-md-wifi_strength_off_outline"></i>
+              );
+          }
+        }
+
+        // Get icon to show for how much of the battery is charged.
+        function getBatteryIcon(batteryOutput) {
+          if (batteryOutput.chargePercent > 90)
+            return <i className="nf nf-fa-battery_4"></i>;
+          if (batteryOutput.chargePercent > 70)
+            return <i className="nf nf-fa-battery_3"></i>;
+          if (batteryOutput.chargePercent > 40)
+            return <i className="nf nf-fa-battery_2"></i>;
+          if (batteryOutput.chargePercent > 20)
+            return <i className="nf nf-fa-battery_1"></i>;
+          return <i className="nf nf-fa-battery_0"></i>;
+        }
+
+        // Weather icon from wttr.in WWO code.
+        function getWeatherIcon(code) {
+          const night = new Date().getHours() < 6 || new Date().getHours() >= 18;
+          if ([200,386,389,392,395].includes(code))
+            return <i className="nf nf-weather-thunderstorm"></i>;
+          if ([179,182,185,227,230,317,320,323,326,329,332,335,338,350,362,365,368,371,374,377].includes(code))
+            return <i className="nf nf-weather-snow"></i>;
+          if ([299,302,305,308,356,359].includes(code))
+            return <i className="nf nf-weather-rain"></i>;
+          if ([176,263,266,281,284,293,296,311,314,353].includes(code))
+            return <i className="nf nf-weather-showers"></i>;
+          if ([143,248,260].includes(code))
+            return <i className="nf nf-weather-fog"></i>;
+          if ([119,122].includes(code))
+            return <i className="nf nf-weather-cloudy"></i>;
+          if (code === 116)
+            return night
+              ? <i className="nf nf-weather-night_alt_cloudy"></i>
+              : <i className="nf nf-weather-day_cloudy"></i>;
+          return night
+            ? <i className="nf nf-weather-night_clear"></i>
+            : <i className="nf nf-weather-day_sunny"></i>;
+        }
+
+        return (
+          <div className="app">
+            <div className="left">
+              <i
+                className="logo nf nf-md-ghost"
+                title="Abrir Hyper"
+                onClick={() => output.glazewm?.runCommand('shell-exec C:\\Users\\Rodrigo\\AppData\\Local\\Programs\\Hyper\\Hyper.exe')}
+                style={{ cursor: 'pointer' }}
+              ></i>
+              {output.glazewm && (
+                <div className="workspaces">
+                  {output.glazewm.currentWorkspaces.map(workspace => (
+                    <button
+                      className={`workspace ${workspace.hasFocus && 'focused'} ${workspace.isDisplayed && 'displayed'}`}
+                      onClick={() =>
+                        output.glazewm.runCommand(
+                          `focus --workspace ${workspace.name}`,
+                        )
+                      }
+                      key={workspace.name}
+                    >
+                      {workspace.displayName ?? workspace.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {output.media?.currentSession?.title && (
+                <div
+                  className="media"
+                  onClick={() => output.media.togglePlayPause()}
+                  title="Play/Pause"
+                >
+              <div
+                    className={`visualizer ${output.media.currentSession.isPlaying ? 'playing' : 'paused'}`}
+                    style={{ '--viz-color': getVisualizerColor(output.media.currentSession.sessionId) }}
+                  >
+                    <span></span><span></span><span></span><span></span>
+                  </div>
+                  <span className="media-text">
+                    {output.media.currentSession.title}
+                    {output.media.currentSession.artist
+                      ? ` — ${output.media.currentSession.artist}`
+                      : ''}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="center">
+              <span className="date-text">{output.date?.formatted?.replace('-feira', '')}</span>
+              <span className="separator">|</span>
+              <span className="time-block">{output.time?.formatted}</span>
+              {weather && (
+                <>
+                  <span className="separator">|</span>
+                  <span className="center-weather">
+                    {getWeatherIcon(weather.code)}
+                    {weather.tempC}°C
+                  </span>
+                </>
+              )}
+            </div>
+
+            <div className="right">
+              {output.glazewm && (
+                <>
+                  {output.glazewm.isPaused && (
+                    <button
+                      className="paused-button"
+                      onClick={() =>
+                        output.glazewm.runCommand('wm-toggle-pause')
+                      }
+                    >
+                      PAUSED
+                    </button>
+                  )}
+                  {output.glazewm.bindingModes.map(bindingMode => (
+                    <button
+                      className="binding-mode"
+                      key={bindingMode.name}
+                      onClick={() =>
+                        output.glazewm.runCommand(
+                          `wm-disable-binding-mode --name ${bindingMode.name}`,
+                        )
+                      }
+                    >
+                      {bindingMode.displayName ?? bindingMode.name}
+                    </button>
+                  ))}
+
+                  <button
+                    className={`tiling-direction nf ${
+                      output.glazewm.tilingDirection === 'horizontal'
+                        ? 'nf-md-swap_horizontal'
+                        : 'nf-md-swap_vertical'
+                    }`}
+                    onClick={() =>
+                      output.glazewm.runCommand('toggle-tiling-direction')
+                    }
+                  ></button>
+                </>
+              )}
+
+              {output.memory && (
+                <div
+                  className={`memory ${output.memory.usage > 85 ? 'high-usage' : ''}`}
+                >
+                  <i className="nf nf-fae-chip"></i>
+                  {Math.round(output.memory.usage)}%
+                </div>
+              )}
+
+              {output.cpu && (
+                <div
+                  className={`cpu ${output.cpu.usage > 85 ? 'high-usage' : ''}`}
+                >
+                  <i className="nf nf-oct-cpu"></i>
+                  {Math.round(output.cpu.usage)}%
+                </div>
+              )}
+
+              {output.battery && (
+                <div className="battery">
+                  {/* Show icon for whether battery is charging. */}
+                  {output.battery.isCharging && (
+                    <i className="nf nf-md-power_plug charging-icon"></i>
+                  )}
+                  {getBatteryIcon(output.battery)}
+                  {Math.round(output.battery.chargePercent)}%
+                </div>
+              )}
+
+              <i
+                className="nf nf-md-volume_high"
+                title="Mixer de Volume"
+                onClick={() => output.glazewm?.runCommand('shell-exec sndvol')}
+                style={{ cursor: 'pointer', marginRight: '20px', fontSize: 'calc(var(--icon-size) * 1.4)' }}
+              ></i>
+
+              <div className="power">
+                {powerOpen && (
+                  <>
+                    <button
+                      className="power-action"
+                      title="Bloquear"
+                      onClick={() =>
+                        runPower(
+                          'shell-exec rundll32.exe user32.dll,LockWorkStation',
+                        )
+                      }
+                    >
+                      <i className="nf nf-md-lock"></i>
+                    </button>
+                    <button
+                      className="power-action"
+                      title="Suspender"
+                      onClick={() =>
+                        runPower(
+                          'shell-exec rundll32.exe powrprof.dll,SetSuspendState 0,1,0',
+                        )
+                      }
+                    >
+                      <i className="nf nf-md-power_sleep"></i>
+                    </button>
+                    <button
+                      className="power-action"
+                      title="Reiniciar"
+                      onClick={() => runPower('shell-exec shutdown /r /t 0')}
+                    >
+                      <i className="nf nf-md-restart"></i>
+                    </button>
+                    <button
+                      className="power-action"
+                      title="Desligar"
+                      onClick={() => runPower('shell-exec shutdown /s /t 0')}
+                    >
+                      <i className="nf nf-md-power_standby"></i>
+                    </button>
+                  </>
+                )}
+                <button
+                  className={`power-action power-toggle ${powerOpen ? 'open' : ''}`}
+                  title="Energia"
+                  onClick={() => setPowerOpen(!powerOpen)}
+                >
+                  <i className="nf nf-md-power"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    </script>
+  </body>
+</html>

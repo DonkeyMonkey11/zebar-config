@@ -1,0 +1,332 @@
+/**
+ * Import the Nerdfonts icon font.
+ * Ref https://www.nerdfonts.com/cheat-sheet for a cheatsheet of available Nerdfonts icons.
+ */
+@import './resources/webfont.css';
+
+:root {
+  --text-size: 12px;
+  --icon-size: 12px;
+
+  --text-color-light: rgba(0 0 0 / 95%);
+  --text-color-dark: rgba(255 255 255 / 95%);
+
+  --icon-color-light: LightSteelBlue;
+  --icon-color-dark: rgba(115 130 175 / 95%);
+
+  --background-color-light: rgba(238 238 238 / 90%);
+  --background-color-dark: linear-gradient(
+    rgb(30 30 46 / 92%),
+    rgb(24 24 37 / 92%)
+  );
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    color: var(--text-color-light);
+  }
+
+  i {
+    color: var(--icon-color-light);
+  }
+
+  #root {
+    background: var(--background-color-light);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color: var(--icon-color-dark);
+  }
+
+  i {
+    color: var(--icon-color-dark);
+  }
+
+  #root {
+    background: var(--background-color-dark);
+  }
+}
+
+i {
+  margin-right: 7px;
+  font-size: var(--icon-size);
+}
+
+body {
+  font-family: ui-monospace, monospace;
+  font-size: var(--text-size);
+  overflow: hidden;
+}
+
+div,
+span,
+p {
+  cursor: default;
+  user-select: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+#root {
+  border-bottom: 1px solid rgb(255 255 255 / 5%);
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  height: 100%;
+  padding: 4px 1.5vw;
+}
+
+.left,
+.center,
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  justify-self: center;
+  font-weight: bold;
+  color: var(--icon-color-dark);
+  letter-spacing: 0.08em;
+}
+
+.date-text {
+  text-transform: capitalize;
+}
+
+.separator {
+  margin: 0 8px;
+  opacity: 0.3;
+}
+
+.time-block {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.time-block i {
+  margin-right: 5px;
+  color: var(--icon-color-dark);
+}
+
+.right {
+  justify-self: end;
+}
+
+.logo,
+.binding-mode,
+.tiling-direction,
+.paused-button,
+.network,
+.memory,
+.cpu,
+.battery {
+  margin-right: 20px;
+}
+
+.logo {
+  font-size: calc(var(--icon-size) * 1.5);
+  color: rgba(220 225 255 / 40%);
+  filter: drop-shadow(0 0 6px rgba(200 210 255 / 30%));
+  transition: all 0.25s ease;
+}
+
+.logo:hover {
+  color: rgba(220 225 255 / 90%);
+  filter: drop-shadow(0 0 10px rgba(180 190 254 / 95%));
+  transform: scale(1.15);
+}
+
+.workspaces {
+  display: flex;
+  align-items: center;
+}
+
+.workspace {
+  background: rgb(255 255 255 / 5%);
+  margin-right: 4px;
+  padding: 4px 10px;
+  color: var(--icon-color-dark);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+
+  &.displayed {
+    background: rgb(255 255 255 / 12%);
+  }
+
+  &:hover {
+    background: rgb(115 130 175 / 50%);
+  }
+
+  &.focused {
+    background: #b4befe;
+    color: #11111b;
+  }
+}
+
+.binding-mode,
+.tiling-direction,
+.paused-button {
+  background: rgb(255 255 255 / 15%);
+  color: var(--icon-color-dark);
+  border-radius: 2px;
+  line-height: 1;
+  padding: 4px 8px;
+  border: 0;
+  cursor: pointer;
+}
+
+.binding-mode {
+  margin-right: 4px;
+}
+
+.tiling-direction {
+  background: transparent;
+  padding: 0;
+  font-size: calc(var(--icon-size) * 1.4);
+}
+
+.cpu,
+.memory {
+  color: #a6e3a1;
+}
+
+.cpu.high-usage,
+.memory.high-usage {
+  color: #f38ba8;
+}
+
+.weather,
+.weather i {
+  color: var(--icon-color-dark);
+}
+
+.center-weather {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.center-weather i {
+  font-size: calc(var(--icon-size) * 1.35);
+  color: var(--icon-color-dark);
+}
+
+.weather-temp {
+  font-weight: bold;
+}
+
+.power {
+  display: flex;
+  align-items: center;
+}
+
+.power-action {
+  background: transparent;
+  border: 0;
+  color: var(--icon-color-dark);
+  cursor: pointer;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+}
+
+.power-action i {
+  margin: 0;
+  font-size: calc(var(--icon-size) * 1.4);
+}
+
+.power-action:hover i {
+  color: #fe640b;
+}
+
+.power-toggle i {
+  color: #fe640b;
+}
+
+.window-title {
+  margin-left: 12px;
+  max-width: 25vw;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  opacity: 0.7;
+}
+
+.media {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+  max-width: 22vw;
+  cursor: pointer;
+}
+
+.visualizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: var(--icon-size);
+  margin-right: 2px;
+  flex-shrink: 0;
+}
+
+.visualizer span {
+  display: block;
+  width: 3px;
+  background: var(--viz-color, var(--icon-color-dark));
+  border-radius: 2px;
+  animation: viz-bounce 1s ease-in-out infinite;
+  min-height: 2px;
+  transition: background 0.5s ease;
+}
+
+.visualizer span:nth-child(1) { animation-delay: 0.0s; }
+.visualizer span:nth-child(2) { animation-delay: 0.2s; }
+.visualizer span:nth-child(3) { animation-delay: 0.4s; }
+.visualizer span:nth-child(4) { animation-delay: 0.1s; }
+
+.visualizer.paused span {
+  animation-play-state: paused;
+  height: 3px;
+}
+
+@keyframes viz-bounce {
+  0%, 100% { height: 30%; }
+  50%       { height: 100%; }
+}
+
+.media-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--icon-color-dark);
+}
+
+.workspace,
+.tiling-direction,
+.media i {
+  font-weight: bold;
+}
+
+.battery {
+  position: relative;
+}
+
+.battery .charging-icon {
+  position: absolute;
+  font-size: 7px;
+  left: -8px;
+  top: 3px;
+}
