@@ -1,0 +1,10 @@
+# Logs
+errors.log
+watchdog.log
+zebar-watchdog.ps1
+
+# Marketplace cache
+.marketplace/
+
+# Backups (já estão nos commits do git)
+backups/
