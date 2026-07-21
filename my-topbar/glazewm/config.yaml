@@ -4,9 +4,7 @@ general:
   # Example: The below command launches Zebar.
   # NOTE: launched via PowerShell's Start-Process because a direct
   # `shell-exec zebar` fails with 0x800704C7 (ShellExecuteEx cancelled).
-  startup_commands:
-    - 'shell-exec wscript.exe "C:\Users\Rodrigo\scripts\start-zebar.vbs"'
-    - 'shell-exec wscript.exe "C:\Users\Rodrigo\scripts\start-mic-server.vbs"'
+  startup_commands: ['shell-exec wscript.exe "C:\\Users\\Rodrigo\\scripts\\start-zebar.vbs"']
 
   # Commands to run just before the WM is shutdown.
   # Example: The below command kills Zebar.

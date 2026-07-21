@@ -42,22 +42,9 @@
         const [output, setOutput] = useState(providers.outputMap);
         const [powerOpen, setPowerOpen] = useState(false);
         const [weather, setWeather] = useState(null);
-        const [micMuted, setMicMuted] = useState(false);
 
         useEffect(() => {
           providers.onOutput(() => setOutput(providers.outputMap));
-        }, []);
-
-        useEffect(() => {
-          function fetchMic() {
-            fetch('http://127.0.0.1:6126/')
-              .then(r => r.json())
-              .then(data => setMicMuted(data.muted))
-              .catch(() => {});
-          }
-          fetchMic();
-          const micId = setInterval(fetchMic, 3000);
-          return () => clearInterval(micId);
         }, []);
 
         useEffect(() => {
@@ -298,14 +285,9 @@
 
               <i
                 className="nf nf-md-microphone"
-                title={micMuted ? 'Microfone Mutado — clique para abrir som' : 'Microfone Ativo — clique para abrir som'}
+                title="Configurações de Microfone"
                 onClick={() => output.glazewm?.runCommand('shell-exec ms-settings:sound')}
-                style={{
-                  cursor: 'pointer',
-                  fontSize: 'calc(var(--icon-size) * 1.4)',
-                  color: micMuted ? '#f38ba8' : '#a6e3a1',
-                  transition: 'color 0.3s ease'
-                }}
+                style={{ cursor: 'pointer', fontSize: 'calc(var(--icon-size) * 1.4)' }}
               ></i>
               <i
                 className="nf nf-md-volume_high"
