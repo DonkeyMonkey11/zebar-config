@@ -127,6 +127,8 @@ body,
 .right {
   margin-left: auto;
   gap: 20px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
 }
 
 .logo {
@@ -216,11 +218,11 @@ body,
 .cpu,
 .memory,
 .network {
-  color: #a6e3a1;
+  color: var(--icon-color-dark);
 }
 
 .network i {
-  color: #a6e3a1;
+  color: var(--icon-color-dark);
 }
 
 .cpu.high-usage,
