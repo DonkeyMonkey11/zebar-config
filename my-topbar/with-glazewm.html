@@ -102,9 +102,19 @@
           const t = title || '';
           // Detectar sites pelo título (antes do parse geral)
           const sites = [
-            ['YouTube', 'YouTube'], ['Tuta', 'Tuta Mail'], ['Gmail', 'Gmail'],
+            // Redes sociais / comunicação
+            ['YouTube', 'YouTube'], ['Twitter', 'Twitter'], ['Instagram', 'Instagram'],
+            ['Telegram', 'Telegram'], ['/ X', 'X'], ['Substack', 'Substack'],
+            // Email / produtividade
+            ['Tuta', 'Tuta Mail'], ['Gmail', 'Gmail'], ['Proton Mail', 'Proton Mail'],
+            ['NotebookLM', 'NotebookLM'], ['Claude', 'Claude'],
+            // Entretenimento
             ['Twitch', 'Twitch'], ['Netflix', 'Netflix'], ['Spotify', 'Spotify'],
-            ['Twitter', 'Twitter'], ['Instagram', 'Instagram'], ['Telegram', 'Telegram'],
+            // Ferramentas
+            ['DuckDuckGo', 'DuckDuckGo'], ['DeepL', 'DeepL'], ['Keybr', 'KeyBr'],
+            // Compras / finanças
+            ['Mercado Livre', 'Mercado Livre'], ['Amazon', 'Amazon'],
+            ['Hotmart', 'Hotmart'], ['Nutror', 'Nutror'], ['Avenue', 'Avenue'],
           ];
           for (const [kw, name] of sites) if (t.includes(kw)) return name;
           // Apps nativos
