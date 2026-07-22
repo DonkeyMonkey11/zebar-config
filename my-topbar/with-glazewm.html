@@ -265,17 +265,6 @@
             </div>
 
             <div className="right">
-              {output.network && (
-                <div
-                  className={`network ${!output.network.defaultInterface ? 'offline' : ''}`}
-                  title="Configurações de Rede"
-                  onClick={() => output.glazewm?.runCommand('shell-exec ms-settings:network')}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {getNetworkIcon(output.network)}
-                </div>
-              )}
-
               {output.glazewm && (
                 <>
                   {output.glazewm.isPaused && (
@@ -315,40 +304,16 @@
                 </>
               )}
 
-              <i
-                className="nf nf-md-cog"
-                title="Configurações do Sistema"
-                onClick={() => output.glazewm?.runCommand('shell-exec ms-settings:')}
-                style={{ cursor: 'pointer', fontSize: 'calc(var(--icon-size) * 1.4)', transition: 'transform 0.4s ease, color 0.2s ease' }}
-                onMouseEnter={e => e.currentTarget.style.transform = 'rotate(90deg)'}
-                onMouseLeave={e => e.currentTarget.style.transform = 'rotate(0deg)'}
-              ></i>
-              <i
-                className="nf nf-md-folder"
-                title="Explorador de Arquivos"
-                onClick={() => output.glazewm?.runCommand('shell-exec explorer.exe')}
-                style={{ cursor: 'pointer', fontSize: 'calc(var(--icon-size) * 1.4)' }}
-              ></i>
-
-              <i
-                className="nf nf-md-image"
-                title="Minhas Imagens"
-                onClick={() => output.glazewm?.runCommand('shell-exec explorer.exe C:\\Users\\Rodrigo\\OneDrive\\Imagens')}
-                style={{ cursor: 'pointer', fontSize: 'calc(var(--icon-size) * 1.4)' }}
-              ></i>
-
-              <i
-                className="nf nf-md-microphone"
-                title="Configurações de Microfone"
-                onClick={() => output.glazewm?.runCommand('shell-exec ms-settings:sound')}
-                style={{ cursor: 'pointer', fontSize: 'calc(var(--icon-size) * 1.4)' }}
-              ></i>
-              <i
-                className="nf nf-md-volume_high"
-                title="Mixer de Volume"
-                onClick={() => output.glazewm?.runCommand('shell-exec sndvol')}
-                style={{ cursor: 'pointer', fontSize: 'calc(var(--icon-size) * 1.4)' }}
-              ></i>
+              {output.network && (
+                <div
+                  className={`network ${!output.network.defaultInterface ? 'offline' : ''}`}
+                  title="Configurações de Rede"
+                  onClick={() => output.glazewm?.runCommand('shell-exec ms-settings:network')}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {getNetworkIcon(output.network)}
+                </div>
+              )}
 
               {output.memory && (
                 <div
