@@ -143,31 +143,51 @@ body,
   transform: scale(1.15);
 }
 
+.active-app {
+  font-weight: bold;
+  color: rgba(220 225 255 / 85%);
+  font-size: var(--text-size);
+  letter-spacing: 0.04em;
+  max-width: 220px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-right: 12px;
+}
+
 .workspaces {
   display: flex;
   align-items: center;
 }
 
 .workspace {
-  background: rgb(255 255 255 / 5%);
+  background: transparent;
   margin-right: 4px;
-  padding: 4px 10px;
-  color: var(--icon-color-dark);
-  border: none;
+  padding: 4px 8px;
+  color: rgba(115 130 175 / 70%);
+  border: 1px solid rgba(115 130 175 / 45%);
   border-radius: 6px;
   cursor: pointer;
+  font-size: var(--text-size);
+  transition: all 0.2s ease;
 
   &.displayed {
-    background: rgb(255 255 255 / 12%);
+    color: rgba(115 130 175 / 85%);
+    border-color: rgba(115 130 175 / 60%);
   }
 
   &:hover {
-    background: rgb(115 130 175 / 50%);
+    color: rgba(115 130 175 / 100%);
+    border-color: rgba(115 130 175 / 85%);
+    background: rgb(115 130 175 / 12%);
   }
 
   &.focused {
     background: #b4befe;
     color: #11111b;
+    border-color: #b4befe;
+    padding: 4px 10px;
+    font-weight: bold;
   }
 }
 

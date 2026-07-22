@@ -42,9 +42,33 @@
         const [output, setOutput] = useState(providers.outputMap);
         const [powerOpen, setPowerOpen] = useState(false);
         const [weather, setWeather] = useState(null);
+        const [focusedApp, setFocusedApp] = useState({ processName: '', title: '' });
 
         useEffect(() => {
           providers.onOutput(() => setOutput(providers.outputMap));
+        }, []);
+
+        useEffect(() => {
+          let ws, timer;
+          function connect() {
+            ws = new WebSocket('ws://localhost:6123');
+            ws.onopen = () => {
+              ws.send('query focused');
+              timer = setInterval(() => { if (ws.readyState === 1) ws.send('query focused'); }, 600);
+            };
+            ws.onmessage = (e) => {
+              try {
+                const m = JSON.parse(e.data);
+                if (m.data?.focused?.processName !== undefined) {
+                  setFocusedApp({ processName: m.data.focused.processName || '', title: m.data.focused.title || '' });
+                }
+              } catch {}
+            };
+            ws.onclose = () => { clearInterval(timer); setTimeout(connect, 2000); };
+            ws.onerror = () => {};
+          }
+          connect();
+          return () => { clearInterval(timer); ws?.close(); };
         }, []);
 
         useEffect(() => {
@@ -71,6 +95,32 @@
           if (id.includes('youtube'))                    return '#ff0000'; // vermelho YouTube
           if (id.includes('vlc'))                        return '#ff8800'; // laranja VLC
           return 'rgba(115, 130, 175, 0.95)';                              // cor padrão
+        }
+
+        function getAppName(processName, title) {
+          const proc = (processName || '').toLowerCase();
+          const t = title || '';
+          // Detectar sites pelo título (antes do parse geral)
+          const sites = [
+            ['YouTube', 'YouTube'], ['Tuta', 'Tuta Mail'], ['Gmail', 'Gmail'],
+            ['Twitch', 'Twitch'], ['Netflix', 'Netflix'], ['Spotify', 'Spotify'],
+            ['Twitter', 'Twitter'], ['Instagram', 'Instagram'], ['Telegram', 'Telegram'],
+          ];
+          for (const [kw, name] of sites) if (t.includes(kw)) return name;
+          // Apps nativos
+          const map = { 'code':'VS Code','discord':'Discord','spotify':'Spotify','whatsapp':'WhatsApp',
+            'slack':'Slack','windowsterminal':'Terminal','hyper':'Hyper','warp':'Warp',
+            'zoom':'Zoom','teams':'Teams','figma':'Figma','explorer':'Explorador',
+            'telegram':'Telegram','signal':'Signal','notion':'Notion','obsidian':'Obsidian',
+            'postman':'Postman','insomnia':'Insomnia','gimp':'GIMP','vlc':'VLC' };
+          const browsers = ['chrome','brave','firefox','msedge','zen','opera','vivaldi'];
+          for (const [k,v] of Object.entries(map)) if (proc.includes(k)) return v;
+          // Navegador genérico: extrai título da página
+          if (browsers.some(b => proc.includes(b))) {
+            const parts = t.split(' - ');
+            return parts.length > 1 ? parts.slice(0, -1).join(' - ') : t.split(' | ')[0];
+          }
+          return t.split(' - ')[0].slice(0, 30) || processName?.replace(/\.exe$/i,'') || '';
         }
 
         function runPower(command) {
@@ -158,41 +208,45 @@
               ></i>
               {output.glazewm && (
                 <div className="workspaces">
-                  {output.glazewm.currentWorkspaces.map(workspace => (
-                    <button
-                      className={`workspace ${workspace.hasFocus && 'focused'} ${workspace.isDisplayed && 'displayed'}`}
-                      onClick={() =>
-                        output.glazewm.runCommand(
-                          `focus --workspace ${workspace.name}`,
-                        )
-                      }
-                      key={workspace.name}
-                    >
-                      {workspace.displayName ?? workspace.name}
-                    </button>
-                  ))}
+                  {output.glazewm.currentWorkspaces.map(workspace => {
+                    const appName = workspace.hasFocus ? getAppName(focusedApp.processName, focusedApp.title) : '';
+                    return (
+                      <button
+                        className={`workspace ${workspace.hasFocus && 'focused'} ${workspace.isDisplayed && 'displayed'}`}
+                        onClick={() => output.glazewm.runCommand(`focus --workspace ${workspace.name}`)}
+                        key={workspace.name}
+                      >
+                        {workspace.hasFocus ? (appName || (workspace.displayName ?? workspace.name)) : (workspace.displayName ?? workspace.name)}
+                      </button>
+                    );
+                  })}
                 </div>
               )}
-              {output.media?.currentSession?.title && (
-                <div
-                  className="media"
-                  onClick={() => output.media.togglePlayPause()}
-                  title="Play/Pause"
-                >
-              <div
-                    className={`visualizer ${output.media.currentSession.isPlaying ? 'playing' : 'paused'}`}
-                    style={{ '--viz-color': getVisualizerColor(output.media.currentSession.sessionId) }}
+              {output.media?.currentSession?.title && (() => {
+                const proc = (focusedApp.processName || '').toLowerCase();
+                const isMediaFocused = ['chrome','brave','firefox','msedge','zen','opera','vivaldi','spotify','vlc'].some(a => proc.includes(a));
+                if (!isMediaFocused) return null;
+                return (
+                  <div
+                    className="media"
+                    onClick={() => output.media.togglePlayPause()}
+                    title="Play/Pause"
                   >
-                    <span></span><span></span><span></span><span></span>
+                    <div
+                      className={`visualizer ${output.media.currentSession.isPlaying ? 'playing' : 'paused'}`}
+                      style={{ '--viz-color': getVisualizerColor(output.media.currentSession.sessionId) }}
+                    >
+                      <span></span><span></span><span></span><span></span>
+                    </div>
+                    <span className="media-text">
+                      {output.media.currentSession.title}
+                      {output.media.currentSession.artist
+                        ? ` — ${output.media.currentSession.artist}`
+                        : ''}
+                    </span>
                   </div>
-                  <span className="media-text">
-                    {output.media.currentSession.title}
-                    {output.media.currentSession.artist
-                      ? ` — ${output.media.currentSession.artist}`
-                      : ''}
-                  </span>
-                </div>
-              )}
+                );
+              })()}
             </div>
 
             <div className="center">
