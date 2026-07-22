@@ -126,25 +126,26 @@
         // Weather icon from wttr.in WWO code.
         function getWeatherIcon(code) {
           const night = new Date().getHours() < 6 || new Date().getHours() >= 18;
+          const s = { fontSize: 'calc(var(--icon-size) * 1.3)', fontFamily: 'inherit', fontStyle: 'normal' };
           if ([200,386,389,392,395].includes(code))
-            return <i className="nf nf-weather-thunderstorm"></i>;
+            return <span style={s}>{'\u26C8\uFE0E'}</span>;
           if ([179,182,185,227,230,317,320,323,326,329,332,335,338,350,362,365,368,371,374,377].includes(code))
-            return <i className="nf nf-weather-snow"></i>;
+            return <span style={s}>{'\u2744\uFE0E'}</span>;
           if ([299,302,305,308,356,359].includes(code))
-            return <i className="nf nf-weather-rain"></i>;
+            return <span style={s}>{'\u2614\uFE0E'}</span>;
           if ([176,263,266,281,284,293,296,311,314,353].includes(code))
-            return <i className="nf nf-weather-showers"></i>;
+            return <span style={s}>{'\u26C6\uFE0E'}</span>;
           if ([143,248,260].includes(code))
-            return <i className="nf nf-weather-fog"></i>;
+            return <span style={s}>{'\u2601\uFE0E'}</span>;
           if ([119,122].includes(code))
-            return <i className="nf nf-weather-cloudy"></i>;
+            return <span style={s}>{'\u2601\uFE0E'}</span>;
           if (code === 116)
             return night
-              ? <i className="nf nf-weather-night_alt_cloudy"></i>
-              : <i className="nf nf-weather-day_cloudy"></i>;
+              ? <span style={s}>{'\u26C5\uFE0E'}</span>
+              : <span style={s}>{'\u26C5\uFE0E'}</span>;
           return night
-            ? <i className="nf nf-weather-night_clear"></i>
-            : <i className="nf nf-weather-day_sunny"></i>;
+            ? <span style={s}>{'\u263E\uFE0E'}</span>
+            : <span style={s}>{'\u2600\uFE0E'}</span>;
         }
 
         return (

@@ -218,7 +218,8 @@ body,
   gap: 4px;
 }
 
-.center-weather i {
+.center-weather i,
+.center-weather span {
   font-size: calc(var(--icon-size) * 1.35);
   color: var(--icon-color-dark);
 }
