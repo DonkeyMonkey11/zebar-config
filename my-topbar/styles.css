@@ -223,6 +223,8 @@ body,
 
 .network i {
   color: var(--icon-color-dark);
+  margin-right: 0;
+  font-size: var(--icon-size);
 }
 
 .cpu.high-usage,
