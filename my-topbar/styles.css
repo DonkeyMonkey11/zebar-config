@@ -78,8 +78,8 @@ body,
 }
 
 .app {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  position: relative;
   align-items: center;
   height: 100%;
   padding: 4px 1.5vw;
@@ -92,8 +92,14 @@ body,
   align-items: center;
 }
 
+.left {
+  flex: 1;
+}
+
 .center {
-  justify-self: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-weight: bold;
   color: var(--icon-color-dark);
   letter-spacing: 0.08em;
@@ -119,7 +125,7 @@ body,
 }
 
 .right {
-  justify-self: end;
+  margin-left: auto;
   gap: 20px;
 }
 
