@@ -277,12 +277,11 @@ body,
 }
 
 .power-action:hover i {
-  color: var(--icon-color-dark);
-  opacity: 1;
+  color: #b4befe;
 }
 
 .power-toggle i {
-  color: var(--icon-color-dark);
+  color: rgba(180 190 254 / 65%);
 }
 
 .window-title {
