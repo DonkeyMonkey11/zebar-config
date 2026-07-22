@@ -132,14 +132,14 @@ body,
 .logo {
   margin-right: 20px;
   font-size: calc(var(--icon-size) * 1.5);
-  color: rgba(220 225 255 / 40%);
-  filter: drop-shadow(0 0 6px rgba(200 210 255 / 30%));
+  color: rgba(180 190 254 / 65%);
+  filter: drop-shadow(0 0 6px rgba(180 190 254 / 30%));
   transition: all 0.25s ease;
 }
 
 .logo:hover {
-  color: rgba(220 225 255 / 90%);
-  filter: drop-shadow(0 0 10px rgba(180 190 254 / 95%));
+  color: #b4befe;
+  filter: drop-shadow(0 0 10px rgba(180 190 254 / 90%));
   transform: scale(1.15);
 }
 
@@ -275,11 +275,12 @@ body,
 }
 
 .power-action:hover i {
-  color: #fe640b;
+  color: var(--icon-color-dark);
+  opacity: 1;
 }
 
 .power-toggle i {
-  color: #fe640b;
+  color: var(--icon-color-dark);
 }
 
 .window-title {
