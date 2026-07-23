@@ -34,6 +34,7 @@
         battery: { type: 'battery' },
         memory: { type: 'memory' },
         media: { type: 'media' },
+        weather: { type: 'weather' },
       });
 
       createRoot(document.getElementById('root')).render(<App />);
@@ -41,7 +42,6 @@
       function App() {
         const [output, setOutput] = useState(providers.outputMap);
         const [powerOpen, setPowerOpen] = useState(false);
-        const [weather, setWeather] = useState(null);
         const [focusedApp, setFocusedApp] = useState({ processName: '', title: '' });
 
         useEffect(() => {
@@ -69,20 +69,6 @@
           }
           connect();
           return () => { clearInterval(timer); ws?.close(); };
-        }, []);
-
-        useEffect(() => {
-          function fetchWeather() {
-            fetch('http://127.0.0.1:6125/')
-              .then(r => r.json())
-              .then(data => {
-                if (data.tempC !== null) setWeather({ tempC: data.tempC, code: data.code });
-              })
-              .catch(() => {});
-          }
-          fetchWeather();
-          const id = setInterval(fetchWeather, 60000);
-          return () => clearInterval(id);
         }, []);
 
         function getVisualizerColor(sessionId) {
@@ -184,28 +170,22 @@
           return <i className="nf nf-fa-battery_0"></i>;
         }
 
-        // Weather icon from wttr.in WWO code.
-        function getWeatherIcon(code) {
-          const night = new Date().getHours() < 6 || new Date().getHours() >= 18;
-          if ([200,386,389,392,395].includes(code))
-            return <i className="nf nf-weather-thunderstorm"></i>;
-          if ([179,182,185,227,230,317,320,323,326,329,332,335,338,350,362,365,368,371,374,377].includes(code))
-            return <i className="nf nf-weather-snow"></i>;
-          if ([299,302,305,308,356,359].includes(code))
-            return <i className="nf nf-weather-rain"></i>;
-          if ([176,263,266,281,284,293,296,311,314,353].includes(code))
-            return <i className="nf nf-weather-showers"></i>;
-          if ([143,248,260].includes(code))
-            return <i className="nf nf-weather-fog"></i>;
-          if ([119,122].includes(code))
-            return <i className="nf nf-weather-cloudy"></i>;
-          if (code === 116)
-            return night
-              ? <i className="nf nf-weather-night_alt_cloudy"></i>
-              : <i className="nf nf-weather-day_cloudy"></i>;
-          return night
-            ? <i className="nf nf-weather-night_clear"></i>
-            : <i className="nf nf-weather-day_sunny"></i>;
+        // Weather icon from Zebar weather provider status.
+        function getWeatherIcon(status) {
+          switch (status) {
+            case 'thunder_day':   return <i className="nf nf-weather-thunderstorm"></i>;
+            case 'thunder_night': return <i className="nf nf-weather-thunderstorm"></i>;
+            case 'snow_day':      return <i className="nf nf-weather-snow"></i>;
+            case 'snow_night':    return <i className="nf nf-weather-snow"></i>;
+            case 'heavy_rain_day':   return <i className="nf nf-weather-rain"></i>;
+            case 'heavy_rain_night': return <i className="nf nf-weather-rain"></i>;
+            case 'light_rain_day':   return <i className="nf nf-weather-showers"></i>;
+            case 'light_rain_night': return <i className="nf nf-weather-showers"></i>;
+            case 'cloudy_day':   return <i className="nf nf-weather-cloudy"></i>;
+            case 'cloudy_night': return <i className="nf nf-weather-cloudy"></i>;
+            case 'clear_night':  return <i className="nf nf-weather-night_clear"></i>;
+            default:             return <i className="nf nf-weather-day_sunny"></i>;
+          }
         }
 
         return (
@@ -270,12 +250,12 @@
               <span className="date-text">{output.date?.formatted?.replace('-feira', '')}</span>
               <span className="separator">|</span>
               <span className="time-block">{output.time?.formatted}</span>
-              {weather && (
+              {output.weather && (
                 <>
                   <span className="separator">|</span>
                   <span className="center-weather">
-                    {getWeatherIcon(weather.code)}
-                    {weather.tempC}°C
+                    {getWeatherIcon(output.weather.status)}
+                    {Math.round(output.weather.celsiusTemp)}°C
                   </span>
                 </>
               )}
