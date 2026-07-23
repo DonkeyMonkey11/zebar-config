@@ -145,6 +145,20 @@ body,
   transform: scale(1.15);
 }
 
+.pacman {
+  font-size: calc(var(--icon-size) * 1.4);
+  color: rgba(249 226 175 / 70%);
+  filter: drop-shadow(0 0 5px rgba(249 226 175 / 35%));
+  transition: all 0.25s ease;
+  margin-right: 4px;
+}
+
+.pacman:hover {
+  color: #f9e2af;
+  filter: drop-shadow(0 0 10px rgba(249 226 175 / 90%));
+  transform: scale(1.15);
+}
+
 .active-app {
   font-weight: bold;
   color: rgba(220 225 255 / 85%);
