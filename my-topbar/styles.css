@@ -231,13 +231,27 @@ body,
 
 .cpu,
 .memory,
+.network,
+.battery {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0;
+}
+
+.cpu,
+.memory,
 .network {
   color: var(--icon-color-dark);
 }
 
+/* Zerar margin-right dos icones dentro do lado direito */
+.right i {
+  margin-right: 0;
+}
+
 .network i {
   color: var(--icon-color-dark);
-  margin-right: 0;
   font-size: var(--icon-size);
 }
 
@@ -285,6 +299,10 @@ body,
   padding: 0 5px;
   display: flex;
   align-items: center;
+}
+
+.power-toggle {
+  padding: 0;
 }
 
 .power-action i {
