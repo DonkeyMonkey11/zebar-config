@@ -180,21 +180,21 @@ body,
   background: transparent;
   margin-right: 8px;
   padding: 4px 8px;
-  color: rgba(115 130 175 / 70%);
-  border: 1px solid rgba(115 130 175 / 45%);
+  color: rgba(115 130 175 / 85%);
+  border: 1px solid rgba(115 130 175 / 65%);
   border-radius: 6px;
   cursor: pointer;
   font-size: var(--text-size);
   transition: all 0.2s ease;
 
   &.displayed {
-    color: rgba(115 130 175 / 85%);
-    border-color: rgba(115 130 175 / 60%);
+    color: rgba(115 130 175 / 95%);
+    border-color: rgba(115 130 175 / 80%);
   }
 
   &:hover {
     color: rgba(115 130 175 / 100%);
-    border-color: rgba(115 130 175 / 85%);
+    border-color: rgba(115 130 175 / 95%);
     background: rgb(115 130 175 / 12%);
   }
 
