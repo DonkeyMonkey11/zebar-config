@@ -371,14 +371,15 @@
               )}
 
               <i
-                className={`nf ${hasUpdates ? 'nf-md-bell_badge' : 'nf-md-bell_outline'}`}
+                className={`nf ${hasUpdates ? 'nf-md-bell_ring' : 'nf-md-bell_outline'}`}
                 title={hasUpdates ? 'Atualizações pendentes' : 'Sistema atualizado'}
                 onClick={() => output.glazewm?.runCommand('shell-exec ms-settings:windowsupdate')}
                 style={{
                   cursor: 'pointer',
-                  fontSize: 'calc(var(--icon-size) * 1.4)',
+                  fontSize: 'calc(var(--icon-size) * 1.2)',
                   color: hasUpdates ? '#fe640b' : 'var(--icon-color-dark)',
-                  transition: 'color 0.3s ease'
+                  transition: 'color 0.3s ease',
+                  marginRight: 0
                 }}
               ></i>
 
