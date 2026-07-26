@@ -134,8 +134,8 @@ body,
 .logo {
   margin-right: 20px;
   font-size: calc(var(--icon-size) * 1.5);
-  color: rgba(180 190 254 / 65%);
-  filter: drop-shadow(0 0 6px rgba(180 190 254 / 30%));
+  color: rgba(180 190 254 / 85%);
+  filter: drop-shadow(0 0 6px rgba(180 190 254 / 45%));
   transition: all 0.25s ease;
 }
 
@@ -147,8 +147,8 @@ body,
 
 .pacman {
   font-size: calc(var(--icon-size) * 1.4);
-  color: rgba(249 226 175 / 70%);
-  filter: drop-shadow(0 0 5px rgba(249 226 175 / 35%));
+  color: rgba(249 226 175 / 90%);
+  filter: drop-shadow(0 0 5px rgba(249 226 175 / 50%));
   transition: all 0.25s ease;
   margin-right: 4px;
 }
