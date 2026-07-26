@@ -44,6 +44,7 @@
         const [powerOpen, setPowerOpen] = useState(false);
         const [focusedApp, setFocusedApp] = useState({ processName: '', title: '' });
         const [cachedWeather, setCachedWeather] = useState(null);
+        const [hasUpdates, setHasUpdates] = useState(false);
 
         useEffect(() => {
           providers.onOutput(() => setOutput(providers.outputMap));
@@ -52,6 +53,18 @@
         useEffect(() => {
           if (output.weather) setCachedWeather(output.weather);
         }, [output.weather]);
+
+        useEffect(() => {
+          function checkUpdates() {
+            fetch('http://localhost:6127/')
+              .then(r => r.json())
+              .then(d => setHasUpdates(d.hasUpdates))
+              .catch(() => {});
+          }
+          checkUpdates();
+          const id = setInterval(checkUpdates, 1800000); // 30 min
+          return () => clearInterval(id);
+        }, []);
 
         useEffect(() => {
           let ws, timer;
@@ -356,6 +369,18 @@
                   {Math.round(output.battery.chargePercent)}%
                 </div>
               )}
+
+              <i
+                className={`nf ${hasUpdates ? 'nf-md-bell_badge' : 'nf-md-bell_outline'}`}
+                title={hasUpdates ? 'Atualizações pendentes' : 'Sistema atualizado'}
+                onClick={() => output.glazewm?.runCommand('shell-exec ms-settings:windowsupdate')}
+                style={{
+                  cursor: 'pointer',
+                  fontSize: 'calc(var(--icon-size) * 1.4)',
+                  color: hasUpdates ? '#fe640b' : 'var(--icon-color-dark)',
+                  transition: 'color 0.3s ease'
+                }}
+              ></i>
 
               <div className="power">
                 {powerOpen && (
