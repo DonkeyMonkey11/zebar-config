@@ -43,10 +43,15 @@
         const [output, setOutput] = useState(providers.outputMap);
         const [powerOpen, setPowerOpen] = useState(false);
         const [focusedApp, setFocusedApp] = useState({ processName: '', title: '' });
+        const [cachedWeather, setCachedWeather] = useState(null);
 
         useEffect(() => {
           providers.onOutput(() => setOutput(providers.outputMap));
         }, []);
+
+        useEffect(() => {
+          if (output.weather) setCachedWeather(output.weather);
+        }, [output.weather]);
 
         useEffect(() => {
           let ws, timer;
@@ -100,8 +105,10 @@
             ['DuckDuckGo', 'DuckDuckGo'], ['DeepL', 'DeepL'],
             ['Practice', 'KeyBr'], ['Monkeytype', 'MonkeyType'],
             // Compras / finanças
-            ['Mercado Livre', 'Mercado Livre'], ['Amazon', 'Amazon'],
-            ['AliExpress', 'AliExpress'], ['Aliexpress', 'AliExpress'],
+            ['Mercado Livre', 'Mercado Livre'], ['MercadoLivre', 'Mercado Livre'],
+            ['mercadolivre', 'Mercado Livre'], ['meli', 'Mercado Livre'],
+            ['Amazon', 'Amazon'], ['amazon.com', 'Amazon'],
+            ['AliExpress', 'AliExpress'], ['Aliexpress', 'AliExpress'], ['aliexpress', 'AliExpress'],
             ['Hotmart', 'Hotmart'], ['Nutror', 'Nutror'], ['Avenue', 'Avenue'],
             // Cripto / Bitcoin
             ['Area Bitcoin', 'Area Bitcoin'], ['AreaBitcoin', 'Area Bitcoin'],
@@ -256,15 +263,18 @@
               <span className="date-text">{output.date?.formatted?.replace('-feira', '')}</span>
               <span className="separator">|</span>
               <span className="time-block">{output.time?.formatted}</span>
-              {output.weather && (
-                <>
-                  <span className="separator">|</span>
-                  <span className="center-weather">
-                    {getWeatherIcon(output.weather.status)}
-                    {Math.round(output.weather.celsiusTemp)}°C
-                  </span>
-                </>
-              )}
+              {(output.weather || cachedWeather) && (() => {
+                const w = output.weather || cachedWeather;
+                return (
+                  <>
+                    <span className="separator">|</span>
+                    <span className="center-weather">
+                      {getWeatherIcon(w.status)}
+                      {Math.round(w.celsiusTemp)}°C
+                    </span>
+                  </>
+                );
+              })()}
             </div>
 
             <div className="right">
