@@ -118,6 +118,7 @@
             ['DuckDuckGo', 'DuckDuckGo'], ['DeepL', 'DeepL'],
             ['Practice', 'KeyBr'], ['Monkeytype', 'MonkeyType'],
             // Compras / finanças
+            ['OneDrive', 'OneDrive'],
             ['Mercado Livre', 'Mercado Livre'], ['MercadoLivre', 'Mercado Livre'],
             ['mercadolivre', 'Mercado Livre'], ['meli', 'Mercado Livre'],
             ['Amazon', 'Amazon'], ['amazon.com', 'Amazon'],
@@ -131,9 +132,18 @@
           ];
           for (const [kw, name] of sites) if (t.includes(kw)) return name;
           // Apps nativos
+          // Explorer: extrai nome da pasta atual do título
+          if (proc.includes('explorer')) {
+            const parts = t.split('\u2013').map(s => s.trim());
+            const folderName = parts[0] || 'Explorador';
+            // Pastas do OneDrive
+            const oneDriveFolders = ['Donkey', 'Pessoal', 'Cofre Pessoal', 'OneDrive'];
+            if (oneDriveFolders.some(f => folderName.includes(f))) return 'OneDrive';
+            return folderName;
+          }
           const map = { 'code':'VS Code','discord':'Discord','spotify':'Spotify','whatsapp':'WhatsApp',
             'slack':'Slack','windowsterminal':'Terminal','hyper':'Hyper','warp':'Warp',
-            'zoom':'Zoom','teams':'Teams','figma':'Figma','explorer':'Explorador',
+            'zoom':'Zoom','teams':'Teams','figma':'Figma',
             'telegram':'Telegram','signal':'Signal','notion':'Notion','obsidian':'Obsidian',
             'postman':'Postman','insomnia':'Insomnia','gimp':'GIMP','vlc':'VLC' };
           const browsers = ['chrome','brave','firefox','msedge','zen','opera','vivaldi'];
