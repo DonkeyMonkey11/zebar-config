@@ -295,19 +295,21 @@
             </div>
 
             <div className="center">
-              <span className="date-text">{output.date?.formatted?.replace('-feira', '')}</span>
-              <span className="separator">|</span>
+              <div className="center-left-group">
+                <span className="date-text">{output.date?.formatted?.replace('-feira', '')}</span>
+                <span className="separator">|</span>
+              </div>
               <span className="time-block">{output.time?.formatted}</span>
               {(output.weather || cachedWeather) && (() => {
                 const w = output.weather || cachedWeather;
                 return (
-                  <>
+                  <div className="center-right-group">
                     <span className="separator">|</span>
                     <span className="center-weather">
                       {getWeatherIcon(w.status)}
                       {Math.round(w.celsiusTemp)}°C
                     </span>
-                  </>
+                  </div>
                 );
               })()}
             </div>

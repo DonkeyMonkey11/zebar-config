@@ -98,12 +98,35 @@ body,
 
 .center {
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
   font-weight: bold;
   color: var(--icon-color-dark);
   letter-spacing: 0.08em;
+}
+
+.center-left-group {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   gap: 20px;
+  padding-right: 20px;
+  pointer-events: all;
+}
+
+.center-right-group {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  padding-left: 20px;
+  pointer-events: all;
 }
 
 .date-text {
