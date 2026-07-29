@@ -305,8 +305,9 @@ body,
 
 .center-weather i,
 .center-weather span {
-  font-size: calc(var(--icon-size) * 1.1);
+  font-size: calc(var(--text-size) * 1.15);
   color: var(--icon-color-dark);
+  font-weight: bold;
 }
 
 .weather-temp {
@@ -342,7 +343,12 @@ body,
 }
 
 .power-toggle i {
-  color: rgba(180 190 254 / 65%);
+  color: rgba(254 100 11 / 85%);
+}
+
+.power-toggle:hover i {
+  color: #fe640b;
+  filter: drop-shadow(0 0 6px rgba(254 100 11 / 60%));
 }
 
 .window-title {
