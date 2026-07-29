@@ -132,30 +132,58 @@ body,
 }
 
 .logo {
-  margin-right: 20px;
+  margin-right: 4px;
   font-size: calc(var(--icon-size) * 1.5);
-  color: rgba(180 190 254 / 85%);
-  filter: drop-shadow(0 0 6px rgba(180 190 254 / 45%));
+  color: rgba(180 190 254 / 90%);
+  filter: drop-shadow(0 0 8px rgba(180 190 254 / 55%));
   transition: all 0.25s ease;
 }
 
 .logo:hover {
   color: #b4befe;
-  filter: drop-shadow(0 0 10px rgba(180 190 254 / 90%));
+  filter: drop-shadow(0 0 12px rgba(180 190 254 / 95%));
+  transform: scale(1.15);
+}
+
+.ghost-mauve {
+  margin-right: 4px;
+  font-size: calc(var(--icon-size) * 1.5);
+  color: rgba(203 166 247 / 90%);
+  filter: drop-shadow(0 0 8px rgba(203 166 247 / 60%));
+  transition: all 0.25s ease;
+}
+
+.ghost-mauve:hover {
+  color: #cba6f7;
+  filter: drop-shadow(0 0 12px rgba(203 166 247 / 95%));
+  transform: scale(1.15);
+}
+
+.ghost-sky {
+  margin-right: 20px;
+  font-size: calc(var(--icon-size) * 1.5);
+  color: rgba(137 220 235 / 95%);
+  filter: drop-shadow(0 0 9px rgba(137 220 235 / 65%));
+  transition: all 0.25s ease;
+}
+
+.ghost-sky:hover {
+  color: #89dceb;
+  filter: drop-shadow(0 0 13px rgba(137 220 235 / 98%));
   transform: scale(1.15);
 }
 
 .pacman {
   font-size: calc(var(--icon-size) * 1.4);
-  color: rgba(249 226 175 / 90%);
-  filter: drop-shadow(0 0 5px rgba(249 226 175 / 50%));
+  color: rgba(249 226 175 / 92%);
+  filter: drop-shadow(0 0 8px rgba(249 226 175 / 60%));
   transition: all 0.25s ease;
   margin-right: 4px;
 }
 
 .pacman:hover {
   color: #f9e2af;
-  filter: drop-shadow(0 0 10px rgba(249 226 175 / 90%));
+  filter: drop-shadow(0 0 13px rgba(249 226 175 / 95%));
   transform: scale(1.15);
 }
 
