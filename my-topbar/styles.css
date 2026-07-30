@@ -381,12 +381,12 @@ body,
 }
 
 .power-toggle i {
-  color: rgba(254 100 11 / 85%);
+  color: rgba(203 166 247 / 75%);
 }
 
 .power-toggle:hover i {
-  color: #fe640b;
-  filter: drop-shadow(0 0 6px rgba(254 100 11 / 60%));
+  color: #cba6f7;
+  filter: drop-shadow(0 0 6px rgba(203 166 247 / 55%));
 }
 
 .window-title {
