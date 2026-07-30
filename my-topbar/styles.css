@@ -31,6 +31,10 @@
   }
 
   #root {
+    background: transparent;
+  }
+
+  .app {
     background: var(--background-color-light);
   }
 }
@@ -45,6 +49,10 @@
   }
 
   #root {
+    background: transparent;
+  }
+
+  .app {
     background: var(--background-color-dark);
   }
 }
@@ -74,7 +82,9 @@ body,
 }
 
 #root {
-  border-bottom: 1px solid rgb(255 255 255 / 5%);
+  background: transparent;
+  padding: 4px 8px;
+  box-sizing: border-box;
 }
 
 .app {
@@ -84,6 +94,9 @@ body,
   height: 100%;
   padding: 4px 1.5vw;
   overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(255 255 255 / 6%);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 30%);
 }
 
 .left,
