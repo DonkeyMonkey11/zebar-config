@@ -416,10 +416,12 @@ body,
 
 .power-toggle i {
   color: var(--icon-color-dark);
+  transition: all 0.2s ease;
 }
 
 .power-toggle:hover i {
-  color: rgba(115 130 175 / 100%);
+  color: #b4befe;
+  filter: drop-shadow(0 0 8px rgba(180 190 254 / 70%));
 }
 
 .window-title {
