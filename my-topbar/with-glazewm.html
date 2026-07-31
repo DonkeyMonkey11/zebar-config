@@ -18,6 +18,21 @@
     <div id="root"></div>
 
     <script type="text/babel" data-type="module">
+      // Auto-reload ao acordar da suspensao
+      (() => {
+        let hiddenAt = null;
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'hidden') {
+            hiddenAt = Date.now();
+          } else if (document.visibilityState === 'visible' && hiddenAt) {
+            if (Date.now() - hiddenAt > 15000) { // ficou oculto > 15s = suspensao
+              setTimeout(() => window.location.reload(), 5000);
+            }
+            hiddenAt = null;
+          }
+        });
+      })();
+
       import React, {
         useState,
         useEffect,
