@@ -55,8 +55,8 @@
       createRoot(document.getElementById('root')).render(<App />);
 
       function App() {
-        // Ativa/desativa o gatinho animado (neko). Mude para false para voltar como era antes.
-        const SHOW_NEKO = true;
+        // Ativa/desativa o gatinho animado (neko). Mude para true para reativar.
+        const SHOW_NEKO = false;
         const [output, setOutput] = useState(providers.outputMap);
         const [powerOpen, setPowerOpen] = useState(false);
         const [focusedApp, setFocusedApp] = useState({ processName: '', title: '' });
