@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=6" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=7" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -38,7 +38,7 @@
         useEffect,
       } from 'https://esm.sh/react@18?dev';
       import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
-      import * as zebar from 'https://esm.sh/zebar@3.0';
+      import * as zebar from 'https://esm.sh/zebar@3.3.1';
 
       const providers = zebar.createProviderGroup({
         network: { type: 'network' },
@@ -55,6 +55,8 @@
       createRoot(document.getElementById('root')).render(<App />);
 
       function App() {
+        // Ativa/desativa o gatinho animado (neko). Mude para false para voltar como era antes.
+        const SHOW_NEKO = true;
         const [output, setOutput] = useState(providers.outputMap);
         const [powerOpen, setPowerOpen] = useState(false);
         const [focusedApp, setFocusedApp] = useState({ processName: '', title: '' });
@@ -311,7 +313,25 @@
 
             <div className="center">
               <div className="center-left-group">
-                <span className="date-text">{output.date?.formatted?.replace('-feira', '')}</span>
+                <span className="date-with-coffee">
+                  <div className="coffee-wrapper" title="☕ Café">
+                    <i
+                      className="nf nf-fa-coffee"
+                      style={{
+                        fontSize: 'var(--icon-size)',
+                        color: 'var(--icon-color-dark)',
+                        marginRight: 0
+                      }}
+                    ></i>
+                  </div>
+                  <span
+                    className="date-text"
+                    title="Ver calendário"
+                    onClick={() => zebar.startWidgetPreset('calendar-popup', 'default')}
+                  >
+                    {output.date?.formatted?.replace('-feira', '')}
+                  </span>
+                </span>
                 <span className="separator">|</span>
               </div>
               <span className="time-block">{output.time?.formatted}</span>
@@ -330,6 +350,7 @@
             </div>
 
             <div className="right">
+              {SHOW_NEKO && <div className="bar-cat" title="Neko"></div>}
               {output.glazewm && (
                 <>
                   {output.glazewm.isPaused && (
@@ -409,29 +430,20 @@
                 </div>
               )}
 
-              <i
-                className={`nf ${hasUpdates ? 'nf-md-bell_ring' : 'nf-md-bell_outline'}`}
+              <div
+                className="update-bell"
                 title={hasUpdates ? 'Atualizações pendentes' : 'Sistema atualizado'}
                 onClick={() => output.glazewm?.runCommand('shell-exec ms-settings:windowsupdate')}
-                style={{
-                  cursor: 'pointer',
-                  fontSize: 'calc(var(--icon-size) * 1.2)',
-                  color: hasUpdates ? '#fe640b' : 'var(--icon-color-dark)',
-                  transition: 'color 0.3s ease',
-                  marginRight: 0
-                }}
-              ></i>
-
-              <div className="coffee-wrapper" title="☕ Café">
+              >
                 <i
-                  className="nf nf-fa-coffee"
+                  className="nf nf-md-bell"
                   style={{
-                    fontSize: 'var(--icon-size)',
-                    color: 'rgba(250 179 135 / 85%)',
-                    marginRight: 0,
-                    filter: 'drop-shadow(0 0 4px rgba(250 179 135 / 40%))'
+                    fontSize: 'calc(var(--icon-size) * 1.2)',
+                    color: 'var(--icon-color-dark)',
+                    marginRight: 0
                   }}
                 ></i>
+                {hasUpdates && <span className="update-dot"></span>}
               </div>
 
               <div className="power">

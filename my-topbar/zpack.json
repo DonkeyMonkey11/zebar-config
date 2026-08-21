@@ -78,6 +78,41 @@
       ]
     },
     {
+      "name": "calendar-popup",
+      "htmlPath": "./calendar-popup.html",
+      "zOrder": "top_most",
+      "shownInTaskbar": false,
+      "focused": true,
+      "resizable": false,
+      "transparent": true,
+      "includeFiles": ["*.html", "*.css"],
+      "caching": {
+        "defaultDuration": 604800,
+        "rules": []
+      },
+      "privileges": {
+        "shellCommands": []
+      },
+      "presets": [
+        {
+          "name": "default",
+          "anchor": "top_center",
+          "offsetX": "0px",
+          "offsetY": "44px",
+          "width": "220px",
+          "height": "270px",
+          "monitorSelection": {
+            "type": "primary"
+          },
+          "dockToEdge": {
+            "enabled": false,
+            "edge": null,
+            "windowMargin": "0px"
+          }
+        }
+      ]
+    },
+    {
       "name": "with-komorebi",
       "htmlPath": "./with-komorebi.html",
       "zOrder": "normal",

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Custom styles (compartilhado com as outras barras). -->
+    <link rel="stylesheet" type="text/css" href="./styles.css?v=3" />
+
+    <!-- Allows React to be run buildless via "text/babel" script below. -->
+    <script
+      src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"
+      integrity="sha256-aS0B0wnsaDByLfE16h4MDCP1fQFccysd1YWOcV+gbBo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+      (async () => {
+        const rootEl = document.getElementById('root');
+        try {
+          const React = await import('https://esm.sh/react@18?dev');
+          const { createRoot } = await import('https://esm.sh/react-dom@18/client?dev');
+          const zebar = await import('https://esm.sh/zebar@3.3.1');
+          const { useState, useEffect } = React;
+
+          // Gera as celulas do mini calendario (null = celula vazia de preenchimento).
+          function getCalendarCells(monthDate) {
+            const year = monthDate.getFullYear();
+            const month = monthDate.getMonth();
+            const firstWeekday = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const cells = [];
+            for (let i = 0; i < firstWeekday; i++) cells.push(null);
+            for (let d = 1; d <= daysInMonth; d++) cells.push(d);
+            while (cells.length % 7 !== 0) cells.push(null);
+            return cells;
+          }
+
+          const WEEKDAY_LABELS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+
+          function App() {
+            const [monthOffset, setMonthOffset] = useState(0);
+
+            // Fecha a janela ao perder o foco (clique fora) ou pressionar Esc.
+            useEffect(() => {
+              let widget;
+              try {
+                widget = zebar.currentWidget();
+              } catch (e) {
+                console.error('currentWidget failed', e);
+                return;
+              }
+              let closed = false;
+              let ready = false;
+              const readyTimer = setTimeout(() => { ready = true; }, 400);
+              function closeSelf() {
+                if (closed || !ready) return;
+                closed = true;
+                widget.close().catch(() => {});
+              }
+              function handleKeyDown(e) {
+                if (e.key === 'Escape') { ready = true; closeSelf(); }
+              }
+              window.addEventListener('blur', closeSelf);
+              window.addEventListener('keydown', handleKeyDown);
+
+              let unlisten;
+              if (widget.tauriWindow && widget.tauriWindow.onFocusChanged) {
+                widget.tauriWindow
+                  .onFocusChanged(({ payload: focused }) => {
+                    if (!focused) closeSelf();
+                  })
+                  .then(fn => { unlisten = fn; })
+                  .catch(() => {});
+              }
+
+              return () => {
+                clearTimeout(readyTimer);
+                window.removeEventListener('blur', closeSelf);
+                window.removeEventListener('keydown', handleKeyDown);
+                if (unlisten) unlisten();
+              };
+            }, []);
+
+            const today = new Date();
+            const monthDate = new Date(today.getFullYear(), today.getMonth() + monthOffset, 1);
+            const cells = getCalendarCells(monthDate);
+            const label = monthDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }).replace(' de ', ' ');
+            const isCurrentMonth = monthOffset === 0;
+
+            return (
+              <div className="calendar-popup">
+                <div className="calendar-header">
+                  <button className="calendar-nav" onClick={() => setMonthOffset(o => o - 1)}>‹</button>
+                  <span className="calendar-title">{label}</span>
+                  <button className="calendar-nav" onClick={() => setMonthOffset(o => o + 1)}>›</button>
+                </div>
+                <div className="calendar-weekdays">
+                  {WEEKDAY_LABELS.map(w => <span key={w}>{w}</span>)}
+                </div>
+                <div className="calendar-grid">
+                  {cells.map((day, i) => {
+                    const isToday = isCurrentMonth && day === today.getDate();
+                    const isWeekend = i % 7 === 0 || i % 7 === 6;
+                    return (
+                      <span
+                        key={i}
+                        className={`calendar-day ${!day ? 'empty' : ''} ${isToday ? 'today' : ''} ${isWeekend ? 'weekend' : ''}`}
+                      >
+                        {day || ''}
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          }
+
+          createRoot(rootEl).render(<App />);
+        } catch (err) {
+          console.error('calendar-popup failed to init', err);
+          rootEl.innerHTML =
+            '<pre style="color:#ff6b6b;background:#111;padding:10px;font-size:11px;' +
+            'white-space:pre-wrap;border-radius:8px;margin:0;">' +
+            String((err && err.stack) || err) +
+            '</pre>';
+        }
+      })();
+    </script>
+  </body>
+</html>
