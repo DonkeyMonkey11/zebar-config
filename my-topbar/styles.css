@@ -370,31 +370,47 @@ body,
 .workspace {
   background: transparent;
   margin-right: 8px;
-  padding: 4px 8px;
-  color: rgba(115 130 175 / 92%);
-  border: 1px solid rgba(115 130 175 / 75%);
-  border-radius: 6px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: calc(var(--text-size) * 0.95);
+  color: rgba(180 190 254 / 75%);
+  border: 1px solid rgba(180 190 254 / 55%);
+  border-radius: 50%;
   cursor: pointer;
-  font-size: var(--text-size);
   transition: all 0.2s ease;
 
   &.displayed {
-    color: rgba(115 130 175 / 100%);
-    border-color: rgba(115 130 175 / 90%);
+    color: rgba(180 190 254 / 90%);
+    border-color: rgba(180 190 254 / 80%);
+    background: rgba(180 190 254 / 35%);
   }
 
   &:hover {
-    color: rgba(115 130 175 / 100%);
-    border-color: rgba(115 130 175 / 95%);
-    background: rgb(115 130 175 / 12%);
+    color: #b4befe;
+    border-color: #b4befe;
+    background: rgba(180 190 254 / 25%);
+    transform: scale(1.25);
   }
 
   &.focused {
+    min-width: auto;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    font-size: var(--text-size);
     background: #b4befe;
     color: #11111b;
     border-color: #b4befe;
+    border-radius: 6px;
     padding: 4px 10px;
     font-weight: bold;
+    transform: none;
   }
 }
 
@@ -422,7 +438,8 @@ body,
 
 .cpu,
 .memory,
-.network,
+.bluetooth,
+.volume,
 .battery {
   display: flex;
   align-items: center;
@@ -432,7 +449,8 @@ body,
 
 .cpu,
 .memory,
-.network {
+.bluetooth,
+.volume {
   color: var(--icon-color-dark);
 }
 
@@ -441,18 +459,14 @@ body,
   margin-right: 0;
 }
 
-.network i {
+.bluetooth i,
+.volume i {
   color: var(--icon-color-dark);
-  font-size: var(--icon-size);
+  font-size: calc(var(--icon-size) * 1.3);
 }
 
 .cpu.high-usage,
-.memory.high-usage,
-.network.offline {
-  color: #f38ba8;
-}
-
-.network.offline i {
+.memory.high-usage {
   color: #f38ba8;
 }
 
