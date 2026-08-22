@@ -63,8 +63,21 @@
         const [cachedWeather, setCachedWeather] = useState(null);
         const [hasUpdates, setHasUpdates] = useState(false);
 
+        // Spinner de terminal (estilo "npm install") pra preencher o espaco vazio.
+        const SHOW_DEV_SPINNER = true;
+        const SPINNER_FRAMES = ['⣋','⣙','⢻','⠼','⣴','⣦','⣇','⢏'];
+        const [spinnerFrame, setSpinnerFrame] = useState(0);
+
         useEffect(() => {
           providers.onOutput(() => setOutput(providers.outputMap));
+        }, []);
+
+        useEffect(() => {
+          if (!SHOW_DEV_SPINNER) return;
+          const id = setInterval(() => {
+            setSpinnerFrame(f => (f + 1) % SPINNER_FRAMES.length);
+          }, 90);
+          return () => clearInterval(id);
         }, []);
 
         useEffect(() => {
@@ -334,6 +347,11 @@
 
             <div className="right">
               {SHOW_NEKO && <div className="bar-cat" title="Neko"></div>}
+              {SHOW_DEV_SPINNER && (
+                <span className="dev-spinner" title="Sempre compilando algo...">
+                  {SPINNER_FRAMES[spinnerFrame]}
+                </span>
+              )}
               {output.glazewm && (
                 <>
                   {output.glazewm.isPaused && (

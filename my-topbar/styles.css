@@ -661,6 +661,18 @@ body,
   box-shadow: 0 0 4px rgba(254 100 11 / 80%), 0 0 0 1.5px rgba(24 24 37 / 90%);
 }
 
+.dev-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  font-size: calc(var(--icon-size) * 1.6);
+  font-weight: bold;
+  color: #a6e3a1;
+  text-shadow: 0 0 6px rgba(166 227 161 / 60%);
+  margin-right: 0;
+}
+
 .bar-cat {
   width: 20px;
   height: 20px;
