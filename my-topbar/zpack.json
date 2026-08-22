@@ -99,8 +99,8 @@
           "anchor": "top_center",
           "offsetX": "0px",
           "offsetY": "44px",
-          "width": "220px",
-          "height": "270px",
+          "width": "360px",
+          "height": "420px",
           "monitorSelection": {
             "type": "primary"
           },

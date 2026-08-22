@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles (compartilhado com as outras barras). -->
-    <link rel="stylesheet" type="text/css" href="./styles.css?v=3" />
+    <link rel="stylesheet" type="text/css" href="./styles.css?v=4" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -95,7 +95,11 @@
               <div className="calendar-popup">
                 <div className="calendar-header">
                   <button className="calendar-nav" onClick={() => setMonthOffset(o => o - 1)}>‹</button>
-                  <span className="calendar-title">{label}</span>
+                  <span
+                    className={`calendar-title${isCurrentMonth ? '' : ' calendar-title-link'}`}
+                    title={isCurrentMonth ? undefined : 'Voltar para hoje'}
+                    onClick={() => setMonthOffset(0)}
+                  >{label}</span>
                   <button className="calendar-nav" onClick={() => setMonthOffset(o => o + 1)}>›</button>
                 </div>
                 <div className="calendar-weekdays">

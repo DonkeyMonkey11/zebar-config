@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=7" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=49" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -220,20 +220,29 @@
 
         // Weather icon from Zebar weather provider status.
         function getWeatherIcon(status) {
+          let icon, color;
           switch (status) {
-            case 'thunder_day':   return <i className="nf nf-weather-thunderstorm"></i>;
-            case 'thunder_night': return <i className="nf nf-weather-thunderstorm"></i>;
-            case 'snow_day':      return <i className="nf nf-weather-snow"></i>;
-            case 'snow_night':    return <i className="nf nf-weather-snow"></i>;
-            case 'heavy_rain_day':   return <i className="nf nf-weather-rain"></i>;
-            case 'heavy_rain_night': return <i className="nf nf-weather-rain"></i>;
-            case 'light_rain_day':   return <i className="nf nf-weather-showers"></i>;
-            case 'light_rain_night': return <i className="nf nf-weather-showers"></i>;
-            case 'cloudy_day':   return <i className="nf nf-weather-cloudy"></i>;
-            case 'cloudy_night': return <i className="nf nf-weather-cloudy"></i>;
-            case 'clear_night':  return <i className="nf nf-weather-night_clear"></i>;
-            default:             return <i className="nf nf-weather-day_sunny"></i>;
+            case 'thunder_day':
+            case 'thunder_night':
+              icon = 'nf-weather-thunderstorm'; color = '#f9e2af'; break;
+            case 'snow_day':
+            case 'snow_night':
+              icon = 'nf-weather-snow'; color = '#cdd6f4'; break;
+            case 'heavy_rain_day':
+            case 'heavy_rain_night':
+              icon = 'nf-weather-rain'; color = '#89dceb'; break;
+            case 'light_rain_day':
+            case 'light_rain_night':
+              icon = 'nf-weather-showers'; color = '#89dceb'; break;
+            case 'cloudy_day':
+            case 'cloudy_night':
+              icon = 'nf-weather-cloudy'; color = '#a6adc8'; break;
+            case 'clear_night':
+              icon = 'nf-weather-night_clear'; color = '#cba6f7'; break;
+            default:
+              icon = 'nf-weather-day_sunny'; color = '#f9e2af'; break;
           }
+          return <i className={`nf ${icon}`} style={{ color }}></i>;
         }
 
         return (
@@ -312,13 +321,16 @@
                 <span className="date-with-coffee">
                   <div className="coffee-wrapper" title="☕ Café">
                     <i
-                      className="nf nf-fa-coffee"
+                      className="nf nf-fa-coffee coffee-icon"
                       style={{
-                        fontSize: 'var(--icon-size)',
-                        color: 'var(--icon-color-dark)',
+                        fontSize: 'calc(var(--icon-size) * 1.1)',
+                        color: '#fab387',
                         marginRight: 0
                       }}
                     ></i>
+                    <span className="coffee-steam s1"></span>
+                    <span className="coffee-steam s2"></span>
+                    <span className="coffee-steam s3"></span>
                   </div>
                   <span
                     className="date-text"
@@ -328,21 +340,20 @@
                     {output.date?.formatted?.replace('-feira', '')}
                   </span>
                 </span>
-                <span className="separator">|</span>
               </div>
-              <span className="time-block">{output.time?.formatted}</span>
-              {(output.weather || cachedWeather) && (() => {
-                const w = output.weather || cachedWeather;
-                return (
-                  <div className="center-right-group">
-                    <span className="separator">|</span>
+              <span className="separator"></span>
+              <div className="center-right-group">
+                <span className="time-block">{output.time?.formatted}</span>
+                {(output.weather || cachedWeather) && (() => {
+                  const w = output.weather || cachedWeather;
+                  return (
                     <span className="center-weather">
                       {getWeatherIcon(w.status)}
                       {Math.round(w.celsiusTemp)}°C
                     </span>
-                  </div>
-                );
-              })()}
+                  );
+                })()}
+              </div>
             </div>
 
             <div className="right">
