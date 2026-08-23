@@ -311,7 +311,7 @@ body,
 }
 .logo {
   margin-right: 4px;
-  font-size: calc(var(--icon-size) * 1.5);
+  font-size: calc(var(--icon-size) * 1.35);
   color: rgba(180 190 254 / 85%);
   filter: drop-shadow(0 0 5px rgba(180 190 254 / 40%));
   transition: all 0.25s ease;
@@ -326,7 +326,7 @@ body,
 
 .ghost-mauve {
   margin-right: 4px;
-  font-size: calc(var(--icon-size) * 1.5);
+  font-size: calc(var(--icon-size) * 1.35);
   color: rgba(203 166 247 / 85%);
   filter: drop-shadow(0 0 5px rgba(203 166 247 / 40%));
   transition: all 0.25s ease;
@@ -341,7 +341,7 @@ body,
 
 .ghost-sky {
   margin-right: 20px;
-  font-size: calc(var(--icon-size) * 1.5);
+  font-size: calc(var(--icon-size) * 1.35);
   color: rgba(137 220 235 / 85%);
   filter: drop-shadow(0 0 5px rgba(137 220 235 / 40%));
   transition: all 0.25s ease;
@@ -355,7 +355,7 @@ body,
 }
 
 .pacman {
-  font-size: calc(var(--icon-size) * 1.6);
+  font-size: calc(var(--icon-size) * 1.45);
   color: #f9e2af;
   filter: drop-shadow(0 0 8px rgba(249 226 175 / 70%));
   transition: all 0.25s ease;
