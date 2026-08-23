@@ -376,7 +376,7 @@ body,
 
 @keyframes pacman-glow {
   0%, 100% { filter: drop-shadow(0 0 3px rgba(249 226 175 / 45%)); }
-  50%      { filter: drop-shadow(0 0 14px rgba(249 226 175 / 95%)); }
+  50%      { filter: drop-shadow(0 0 6px rgba(249 226 175 / 60%)) drop-shadow(0 0 11px rgba(249 226 175 / 30%)); }
 }
 
 .active-app {
