@@ -311,11 +311,10 @@ body,
 }
 .logo {
   margin-right: 4px;
-  font-size: calc(var(--icon-size) * 1.35);
+  font-size: calc(var(--icon-size) * 1.45);
   color: rgba(180 190 254 / 85%);
   filter: drop-shadow(0 0 5px rgba(180 190 254 / 40%));
   transition: all 0.25s ease;
-  animation: neon-breathe 3s ease-in-out infinite;
 }
 
 .logo:hover {
@@ -326,11 +325,10 @@ body,
 
 .ghost-mauve {
   margin-right: 4px;
-  font-size: calc(var(--icon-size) * 1.35);
+  font-size: calc(var(--icon-size) * 1.45);
   color: rgba(203 166 247 / 85%);
   filter: drop-shadow(0 0 5px rgba(203 166 247 / 40%));
   transition: all 0.25s ease;
-  animation: neon-breathe 3s ease-in-out infinite;
 }
 
 .ghost-mauve:hover {
@@ -341,11 +339,10 @@ body,
 
 .ghost-sky {
   margin-right: 20px;
-  font-size: calc(var(--icon-size) * 1.35);
+  font-size: calc(var(--icon-size) * 1.45);
   color: rgba(137 220 235 / 85%);
   filter: drop-shadow(0 0 5px rgba(137 220 235 / 40%));
   transition: all 0.25s ease;
-  animation: neon-breathe 3s ease-in-out infinite;
 }
 
 .ghost-sky:hover {
@@ -376,7 +373,7 @@ body,
 
 @keyframes pacman-glow {
   0%, 100% { filter: drop-shadow(0 0 3px rgba(249 226 175 / 45%)); }
-  50%      { filter: drop-shadow(0 0 6px rgba(249 226 175 / 60%)) drop-shadow(0 0 11px rgba(249 226 175 / 30%)); }
+  50%      { filter: drop-shadow(0 0 8px rgba(249 226 175 / 75%)) drop-shadow(0 0 15px rgba(249 226 175 / 45%)); }
 }
 
 .active-app {
