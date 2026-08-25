@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=59" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=88" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -131,6 +131,12 @@
           return 'rgba(115, 130, 175, 0.95)';                              // cor padrão
         }
 
+        function getUsageColor(usage) {
+          if (usage > 85) return '#f38ba8';
+          if (usage > 50) return '#f9e2af';
+          return '#a6e3a1';
+        }
+
         function getAppName(processName, title) {
           const proc = (processName || '').toLowerCase();
           const t = title || '';
@@ -141,7 +147,7 @@
             ['Telegram', 'Telegram'], ['/ X', 'X'], ['Substack', 'Substack'],
             // Email / produtividade
             ['Tuta', 'Tuta Mail'], ['Gmail', 'Gmail'], ['Proton Mail', 'Proton Mail'],
-            ['NotebookLM', 'NotebookLM'], ['Claude', 'Claude'],
+            ['NotebookLM', 'NotebookLM'], ['Claude', 'Claude'], ['OpenRouter', 'OpenRouter'],
             // Entretenimento
             ['Twitch', 'Twitch'], ['Netflix', 'Netflix'], ['Spotify', 'Spotify'],
             // Ferramentas
@@ -389,6 +395,7 @@
                     </button>
                   ))}
 
+                  <span className="ecg-bridge" title="Batimento cardíaco"></span>
                   <button
                     className={`tiling-direction nf ${
                       output.glazewm.tilingDirection === 'horizontal'
@@ -405,18 +412,40 @@
               {output.cpu && (
                 <div
                   className={`cpu ${output.cpu.usage > 85 ? 'high-usage' : ''}`}
+                  title={`CPU: ${Math.round(output.cpu.usage)}%`}
                 >
-                  <i className="nf nf-oct-cpu"></i>
-                  {Math.round(output.cpu.usage)}%
+                  <span className="usage-label">CPU</span>
+                  {[1, 2, 3, 4, 5].map(n => (
+                    <span
+                      key={n}
+                      className={`seg${output.cpu.usage >= n * 20 ? ' on' : ''}`}
+                      style={
+                        output.cpu.usage >= n * 20
+                          ? { '--seg-color': getUsageColor(output.cpu.usage) }
+                          : undefined
+                      }
+                    ></span>
+                  ))}
                 </div>
               )}
 
               {output.memory && (
                 <div
                   className={`memory ${output.memory.usage > 85 ? 'high-usage' : ''}`}
+                  title={`Memória: ${Math.round(output.memory.usage)}%`}
                 >
-                  <i className="nf nf-fae-chip"></i>
-                  {Math.round(output.memory.usage)}%
+                  <span className="usage-label">MEM</span>
+                  {[1, 2, 3, 4, 5].map(n => (
+                    <span
+                      key={n}
+                      className={`seg${output.memory.usage >= n * 20 ? ' on' : ''}`}
+                      style={
+                        output.memory.usage >= n * 20
+                          ? { '--seg-color': getUsageColor(output.memory.usage) }
+                          : undefined
+                      }
+                    ></span>
+                  ))}
                 </div>
               )}
 
