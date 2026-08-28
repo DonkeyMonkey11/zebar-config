@@ -62,6 +62,7 @@
         const [focusedApp, setFocusedApp] = useState({ processName: '', title: '' });
         const [cachedWeather, setCachedWeather] = useState(null);
         const [hasUpdates, setHasUpdates] = useState(false);
+        const [sunTimes, setSunTimes] = useState(null);
 
         // Spinner de terminal (estilo "npm install") pra preencher o espaco vazio.
         const SHOW_DEV_SPINNER = true;
@@ -83,6 +84,26 @@
         useEffect(() => {
           if (output.weather) setCachedWeather(output.weather);
         }, [output.weather]);
+
+        useEffect(() => {
+          let cancelled = false;
+          async function loadSunTimes() {
+            try {
+              const res = await fetch(
+                'https://api.open-meteo.com/v1/forecast?latitude=-23.5505&longitude=-46.6333&daily=sunrise,sunset&timezone=auto&forecast_days=1',
+              );
+              const data = await res.json();
+              if (cancelled || !data.daily?.sunrise?.length) return;
+              setSunTimes({
+                sunrise: new Date(data.daily.sunrise[0]),
+                sunset: new Date(data.daily.sunset[0]),
+              });
+            } catch {}
+          }
+          loadSunTimes();
+          const id = setInterval(loadSunTimes, 3600000);
+          return () => { cancelled = true; clearInterval(id); };
+        }, []);
 
         useEffect(() => {
           function checkUpdates() {
@@ -225,29 +246,27 @@
         }
 
         // Weather icon from Zebar weather provider status.
-        function getWeatherIcon(status) {
+        function getWeatherIcon(status, isDay) {
+          const base = (status || '').replace(/_(day|night)$/, '');
           let icon, color;
-          switch (status) {
-            case 'thunder_day':
-            case 'thunder_night':
+          switch (base) {
+            case 'thunder':
               icon = 'nf-md-weather_lightning'; color = '#f9e2af'; break;
-            case 'snow_day':
-            case 'snow_night':
+            case 'snow':
               icon = 'nf-md-weather_snowy'; color = '#cdd6f4'; break;
-            case 'heavy_rain_day':
-            case 'heavy_rain_night':
+            case 'heavy_rain':
               icon = 'nf-md-weather_pouring'; color = '#89dceb'; break;
-            case 'light_rain_day':
-            case 'light_rain_night':
+            case 'light_rain':
               icon = 'nf-md-weather_rainy'; color = '#89dceb'; break;
-            case 'cloudy_day':
-              icon = 'nf-md-weather_partly_cloudy'; color = '#a6adc8'; break;
-            case 'cloudy_night':
-              icon = 'nf-md-weather_night_partly_cloudy'; color = '#a6adc8'; break;
-            case 'clear_night':
-              icon = 'nf-md-moon_waning_crescent'; color = '#fff'; break;
+            case 'cloudy':
+              icon = isDay ? 'nf-md-weather_partly_cloudy' : 'nf-md-weather_night_partly_cloudy';
+              color = '#a6adc8'; break;
+            case 'clear':
+              icon = isDay ? 'nf-md-weather_sunny' : 'nf-md-moon_waning_crescent';
+              color = isDay ? '#f9e2af' : '#fff'; break;
             default:
-              icon = 'nf-md-weather_sunny'; color = '#f9e2af'; break;
+              icon = isDay ? 'nf-md-weather_sunny' : 'nf-md-moon_waning_crescent';
+              color = isDay ? '#f9e2af' : '#fff'; break;
           }
           return <i className={`nf ${icon}`} style={{ color }}></i>;
         }
@@ -353,9 +372,13 @@
                 <span className="time-block">{output.time?.formatted}</span>
                 {(output.weather || cachedWeather) && (() => {
                   const w = output.weather || cachedWeather;
+                  const isDayNow = sunTimes
+                    ? Date.now() >= sunTimes.sunrise.getTime() &&
+                      Date.now() < sunTimes.sunset.getTime()
+                    : (w.isDaytime ?? true);
                   return (
                     <span className="center-weather">
-                      {getWeatherIcon(w.status)}
+                      {getWeatherIcon(w.status, isDayNow)}
                       {Math.round(w.celsiusTemp)}°C
                     </span>
                   );
