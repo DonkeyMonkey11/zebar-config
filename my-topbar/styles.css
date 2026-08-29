@@ -562,6 +562,10 @@ body,
   font-weight: bold;
 }
 
+.center-weather i.weather-moon {
+  font-size: calc(var(--text-size) * 1.0);
+}
+
 .weather-temp {
   font-weight: bold;
 }

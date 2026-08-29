@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=88" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=91" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -268,7 +268,7 @@
               icon = isDay ? 'nf-md-weather_sunny' : 'nf-md-moon_waning_crescent';
               color = isDay ? '#f9e2af' : '#fff'; break;
           }
-          return <i className={`nf ${icon}`} style={{ color }}></i>;
+          return <i className={`nf ${icon}${icon.includes('moon') ? ' weather-moon' : ''}`} style={{ color }}></i>;
         }
 
         return (
