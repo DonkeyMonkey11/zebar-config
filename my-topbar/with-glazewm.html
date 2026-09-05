@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=93" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=94" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -49,7 +49,7 @@
         battery: { type: 'battery' },
         memory: { type: 'memory' },
         media: { type: 'media' },
-        weather: { type: 'weather', latitude: -23.5505, longitude: -46.6333 },
+        weather: { type: 'weather', latitude: -23.5505, longitude: -46.6333, refreshInterval: 300000 },
       });
 
       createRoot(document.getElementById('root')).render(<App />);
@@ -62,7 +62,6 @@
         const [focusedApp, setFocusedApp] = useState({ processName: '', title: '' });
         const [cachedWeather, setCachedWeather] = useState(null);
         const [hasUpdates, setHasUpdates] = useState(false);
-        const [sunTimes, setSunTimes] = useState(null);
 
         // Spinner de terminal (estilo "npm install") pra preencher o espaco vazio.
         const SHOW_DEV_SPINNER = true;
@@ -85,23 +84,31 @@
           if (output.weather) setCachedWeather(output.weather);
         }, [output.weather]);
 
+        // Fallback: busca direta a Open-Meteo caso o provider nativo nao emita
+        // (ex.: primeira chamada falha no boot apos queda de energia, antes da rede).
         useEffect(() => {
           let cancelled = false;
-          async function loadSunTimes() {
-            try {
-              const res = await fetch(
-                'https://api.open-meteo.com/v1/forecast?latitude=-23.5505&longitude=-46.6333&daily=sunrise,sunset&timezone=auto&forecast_days=1',
-              );
-              const data = await res.json();
-              if (cancelled || !data.daily?.sunrise?.length) return;
-              setSunTimes({
-                sunrise: new Date(data.daily.sunrise[0]),
-                sunset: new Date(data.daily.sunset[0]),
-              });
-            } catch {}
+          const url = 'https://api.open-meteo.com/v1/forecast?latitude=-23.5505&longitude=-46.6333&current_weather=true&daily=sunset,sunrise&timezone=auto&temperature_unit=celsius';
+          function loadWeatherFallback() {
+            if (cancelled) return;
+            fetch(url)
+              .then(r => r.json())
+              .then(d => {
+                if (cancelled || !d?.current_weather) return;
+                const cw = d.current_weather;
+                const isDay = cw.is_day === 1;
+                setCachedWeather({
+                  isDaytime: isDay,
+                  status: weatherCodeToStatus(cw.weathercode, isDay),
+                  celsiusTemp: cw.temperature,
+                  fahrenheitTemp: cw.temperature * 9 / 5 + 32,
+                  windSpeed: cw.windspeed,
+                });
+              })
+              .catch(() => {});
           }
-          loadSunTimes();
-          const id = setInterval(loadSunTimes, 3600000);
+          loadWeatherFallback();
+          const id = setInterval(loadWeatherFallback, 300000); // 5 min
           return () => { cancelled = true; clearInterval(id); };
         }, []);
 
@@ -247,6 +254,19 @@
           return <i className="nf nf-fa-battery_0"></i>;
         }
 
+        // Mapeia weathercode da Open-Meteo para status (mesma logica do provider).
+        function weatherCodeToStatus(code, isDay) {
+          const suffix = isDay ? 'day' : 'night';
+          if (code === 0) return `clear_${suffix}`;
+          if (code <= 50) return `cloudy_${suffix}`;
+          if (code <= 62) return `light_rain_${suffix}`;
+          if (code <= 70) return `heavy_rain_${suffix}`;
+          if (code <= 79) return `snow_${suffix}`;
+          if (code <= 84) return `heavy_rain_${suffix}`;
+          if (code <= 94) return `snow_${suffix}`;
+          return `thunder_${suffix}`;
+        }
+
         // Weather icon from Zebar weather provider status.
         function getWeatherIcon(status, isDay) {
           const base = (status || '').replace(/_(day|night)$/, '');
@@ -264,10 +284,10 @@
               icon = isDay ? 'nf-md-weather_partly_cloudy' : 'nf-md-weather_cloudy';
               color = '#a6adc8'; break;
             case 'clear':
-              icon = isDay ? 'nf-md-weather_sunny' : 'nf-md-moon_waning_crescent';
+              icon = isDay ? 'nf-weather-day_sunny' : 'nf-md-moon_waning_crescent';
               color = isDay ? '#f9e2af' : '#fff'; break;
             default:
-              icon = isDay ? 'nf-md-weather_sunny' : 'nf-md-moon_waning_crescent';
+              icon = isDay ? 'nf-weather-day_sunny' : 'nf-md-moon_waning_crescent';
               color = isDay ? '#f9e2af' : '#fff'; break;
           }
           return <i className={`nf ${icon}${icon.includes('moon') ? ' weather-moon' : ''}`} style={{ color }}></i>;
@@ -374,10 +394,7 @@
                 <span className="time-block">{output.time?.formatted}</span>
                 {(output.weather || cachedWeather) && (() => {
                   const w = output.weather || cachedWeather;
-                  const isDayNow = sunTimes
-                    ? Date.now() >= sunTimes.sunrise.getTime() &&
-                      Date.now() < sunTimes.sunset.getTime()
-                    : (w.isDaytime ?? true);
+                  const isDayNow = w.isDaytime ?? true;
                   return (
                     <span className="center-weather">
                       {getWeatherIcon(w.status, isDayNow)}
