@@ -39,7 +39,6 @@ try {
     }
 
     $updateJs  = Join-Path $scriptDir 'update-check-server.js'
-    $activeJs  = Join-Path $scriptDir 'active-window-server.js'
 
     # 2) update-check-server.js (node, porta 6127) - identifica pelo command line exato
     $updateRunning = Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
@@ -47,14 +46,6 @@ try {
     if (-not $updateRunning) {
         Write-Log "update-check-server.js nao encontrado - iniciando"
         Start-Process 'C:\Program Files\nodejs\node.exe' -ArgumentList "`"$updateJs`"" -WindowStyle Hidden
-    }
-
-    # 3) active-window-server.js (node, porta 6126) - identifica pelo command line exato
-    $activeRunning = Get-CimInstance Win32_Process -Filter "Name='node.exe'" |
-        Where-Object { $_.CommandLine -like "*$activeJs*" }
-    if (-not $activeRunning) {
-        Write-Log "active-window-server.js nao encontrado - iniciando"
-        Start-Process 'C:\Program Files\nodejs\node.exe' -ArgumentList "`"$activeJs`"" -WindowStyle Hidden
     }
 }
 finally {
