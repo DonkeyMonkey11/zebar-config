@@ -18,13 +18,15 @@ try {
     $searcher = $session.CreateUpdateSearcher()
     $result = $searcher.Search("IsInstalled=0 and IsHidden=0")
 
-    # Ignora drivers (opcionais/obrigatorios) - so acende para atualizacoes de software
+    # Ignora ruidos: drivers opcionais e atualizacoes de definicoes (Defender),
+    # que chegam varias vezes por dia. So acende para atualizacoes de software relevantes.
+    $ignoredCategories = @('Drivers', 'Definition Updates')
     $pending = @($result.Updates | Where-Object {
-        $isDriver = $false
+        $shouldIgnore = $false
         foreach ($cat in $_.Categories) {
-            if ($cat.Name -eq 'Drivers') { $isDriver = $true; break }
+            if ($ignoredCategories -contains $cat.Name) { $shouldIgnore = $true; break }
         }
-        -not $isDriver
+        -not $shouldIgnore
     })
 
     if ($pending.Count -gt 0) {
