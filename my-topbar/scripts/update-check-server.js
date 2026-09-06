@@ -4,7 +4,8 @@ const { exec } = require('child_process');
 const PORT = 6127;
 // Verifica reinicio pendente (update ja instalado) OU atualizacoes
 // disponiveis para instalar via API real do Windows Update (COM).
-const CHECK_SCRIPT = 'C:\\Users\\Rodrigo\\scripts\\check-windows-updates.ps1';
+const path = require('path');
+const CHECK_SCRIPT = path.join(__dirname, 'check-windows-updates.ps1');
 
 let hasUpdates = false;
 

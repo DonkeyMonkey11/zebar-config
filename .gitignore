@@ -2,6 +2,7 @@
 errors.log
 watchdog.log
 zebar-watchdog.ps1
+my-topbar/scripts/*.log
 
 # Marketplace cache
 .marketplace/
