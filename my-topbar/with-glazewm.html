@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=94" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=96" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -114,13 +114,13 @@
 
         useEffect(() => {
           function checkUpdates() {
-            fetch('http://localhost:6127/')
+            fetch('http://localhost:6127/?ts=' + Date.now())
               .then(r => r.json())
-              .then(d => setHasUpdates(d.hasUpdates))
+              .then(d => setHasUpdates(!!d.hasUpdates))
               .catch(() => {});
           }
           checkUpdates();
-          const id = setInterval(checkUpdates, 1800000); // 30 min
+          const id = setInterval(checkUpdates, 300000); // 5 min
           return () => clearInterval(id);
         }, []);
 
@@ -190,6 +190,7 @@
             ['Hotmart', 'Hotmart'], ['Nutror', 'Nutror'], ['Avenue', 'Avenue'],
             ['Usado, Seminovo ou Novo', 'WebMotors'], ['Ofertas em', 'WebMotors'], ['WebMotors', 'WebMotors'], ['webmotors', 'WebMotors'],
             ['Keychron', 'Keychron'], ['keychron', 'Keychron'],
+            ['Ricardo Almeida', 'Ricardo Almeida'], ['ricardo almeida', 'Ricardo Almeida'],
             // Cripto / Bitcoin
             ['Area Bitcoin', 'Area Bitcoin'], ['AreaBitcoin', 'Area Bitcoin'],
             ['Bitcoin BR', 'Bitcoin BR'], ['BitcoinBR', 'Bitcoin BR'],
