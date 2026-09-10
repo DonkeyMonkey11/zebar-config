@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=101" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=102" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -168,6 +168,8 @@
         function getAppName(processName, title) {
           const proc = (processName || '').toLowerCase();
           const t = title || '';
+          // PDF: exibir apenas 'PDF' (arquivo .pdf aberto em navegador ou leitor)
+          if (/\.pdf\b/i.test(t)) return 'PDF';
           // Detectar sites pelo título (antes do parse geral)
           const sites = [
             // Redes sociais / comunicação
@@ -221,7 +223,8 @@
             'zoom':'Zoom','teams':'Teams','figma':'Figma',
             'telegram':'Telegram','signal':'Signal','notion':'Notion','obsidian':'Obsidian',
             'postman':'Postman','insomnia':'Insomnia','gimp':'GIMP','vlc':'VLC',
-            'cmd':'Prompt de Comando' };
+            'cmd':'Prompt de Comando',
+            'winword':'Word','excel':'Excel' };
           const browsers = ['chrome','brave','firefox','msedge','zen','opera','vivaldi'];
           for (const [k,v] of Object.entries(map)) if (proc.includes(k)) return v;
           // Navegador genérico: extrai título da página
