@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=102" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=103" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -235,6 +235,19 @@
           return t.split(' - ')[0].slice(0, 30) || processName?.replace(/\.exe$/i,'') || '';
         }
 
+        // Seleciona a sessão de mídia a exibir, ignorando apps que poluem o
+        // SMTC sem tocar nada (ex.: WhatsApp Desktop registra 'WhatsApp').
+        function getMediaSession(media) {
+          if (!media) return null;
+          const sessions = (media.allSessions || []).filter(
+            s => s && s.sessionId && !/whatsapp/i.test(s.sessionId),
+          );
+          if (sessions.length === 0) return null;
+          return sessions.find(s => s.isPlaying)
+            || sessions.find(s => s.isCurrentSession)
+            || sessions[0];
+        }
+
         function runPower(command) {
           output.glazewm?.runCommand(command);
           setPowerOpen(false);
@@ -350,26 +363,28 @@
                   })}
                 </div>
               )}
-              {output.media?.currentSession?.title && (() => {
+              {output.media && (() => {
+                const session = getMediaSession(output.media);
+                if (!session || !session.title) return null;
                 const proc = (focusedApp.processName || '').toLowerCase();
                 const isMediaFocused = ['chrome','brave','firefox','msedge','zen','opera','vivaldi','spotify','vlc'].some(a => proc.includes(a));
                 if (!isMediaFocused) return null;
                 return (
                   <div
                     className="media"
-                    onClick={() => output.media.togglePlayPause()}
+                    onClick={() => output.media.togglePlayPause({ sessionId: session.sessionId })}
                     title="Play/Pause"
                   >
                     <div
-                      className={`visualizer ${output.media.currentSession.isPlaying ? 'playing' : 'paused'}`}
-                      style={{ '--viz-color': getVisualizerColor(output.media.currentSession.sessionId) }}
+                      className={`visualizer ${session.isPlaying ? 'playing' : 'paused'}`}
+                      style={{ '--viz-color': getVisualizerColor(session.sessionId) }}
                     >
                       <span></span><span></span><span></span><span></span>
                     </div>
                     <span className="media-text">
-                      {output.media.currentSession.title}
-                      {output.media.currentSession.artist
-                        ? ` — ${output.media.currentSession.artist}`
+                      {session.title}
+                      {session.artist
+                        ? ` — ${session.artist}`
                         : ''}
                     </span>
                   </div>
