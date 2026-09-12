@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=106" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=107" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -135,7 +135,7 @@
             ws.onmessage = (e) => {
               try {
                 const m = JSON.parse(e.data);
-                if (m.data?.focused?.processName !== undefined) {
+                if (m.data?.focused) {
                   setFocusedApp({ processName: m.data.focused.processName || '', title: m.data.focused.title || '' });
                 }
               } catch {}
@@ -235,6 +235,15 @@
           for (const [k,v] of Object.entries(map)) if (proc.includes(k)) return v;
           // Navegador genérico: extrai título da página
           if (browsers.some(b => proc.includes(b))) {
+            const tLower = t.trim().toLowerCase();
+            const browserNames = { chrome: 'Chrome', brave: 'Brave', firefox: 'Firefox', msedge: 'Edge', zen: 'Zen', opera: 'Opera', vivaldi: 'Vivaldi' };
+            const browserName = browserNames[browsers.find(b => proc.includes(b))];
+            // Nova guia/aba vazia: mostrar o nome do navegador em vez de 'Nova guia'/'New Tab'.
+            const emptyTabs = ['nova guia', 'nova aba', 'new tab', 'nova guia anônima', 'nova aba anônima', 'nova guia de navegação anônima', 'new private tab', 'private tab', 'incognito tab'];
+            const baseTitle = tLower.split(' - ')[0].trim();
+            if (!tLower || emptyTabs.includes(tLower) || emptyTabs.includes(baseTitle)) {
+              return browserName || 'Navegador';
+            }
             const parts = t.split(' - ');
             return parts.length > 1 ? parts.slice(0, -1).join(' - ') : t.split(' | ')[0];
           }
