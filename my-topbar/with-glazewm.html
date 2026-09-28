@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=108" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=110" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -183,11 +183,13 @@
             // Ferramentas
             ['DuckDuckGo', 'DuckDuckGo'], ['DeepL', 'DeepL'],
             ['Practice', 'KeyBr'], ['Monkeytype', 'MonkeyType'],
+            ['10.77.77.1', 'Sophos Firewall'],
             // Compras / finanças
             ['OneDrive', 'OneDrive'],
             ['Mercado Livre', 'Mercado Livre'], ['MercadoLivre', 'Mercado Livre'],
             ['mercadolivre', 'Mercado Livre'], ['meli', 'Mercado Livre'],
             ['Amazon', 'Amazon'], ['amazon.com', 'Amazon'],
+            ['Pichau', 'Pichau'], ['pichau', 'Pichau'],
             ['AliExpress', 'AliExpress'], ['Aliexpress', 'AliExpress'], ['aliexpress', 'AliExpress'],
             ['Hotmart', 'Hotmart'], ['Nutror', 'Nutror'], ['Avenue', 'Avenue'],
             ['Usado, Seminovo ou Novo', 'WebMotors'], ['Ofertas em', 'WebMotors'], ['WebMotors', 'WebMotors'], ['webmotors', 'WebMotors'],
@@ -212,6 +214,8 @@
             ['OLX', 'OLX'], ['olx', 'OLX'],
             // Kabum
             ['KaBuM', 'Kabum'], ['kabum', 'Kabum'], ['Kabum', 'Kabum'],
+            // Ikarus Craft
+            ['Ikarus', 'Ikarus'], ['ikarus', 'Ikarus'], ['ikaruscraft', 'Ikarus'],
             // Grid Studio
             ['Grid Studio', 'Grid Studio'], ['grid studio', 'Grid Studio'],
             // Kinesis (kinesis-ergo.com) - nomes de produtos e marca no título
@@ -462,6 +466,8 @@
                   {SPINNER_FRAMES[spinnerFrame]}
                 </span>
               )}
+              <span className="hacker-sign" title="donkey_monkey">&gt;_donkey_monkey</span>
+              <span className="ecg-bridge" title="Batimento cardíaco"></span>
               {output.glazewm && (
                 <>
                   {output.glazewm.isPaused && (
@@ -488,7 +494,6 @@
                     </button>
                   ))}
 
-                  <span className="ecg-bridge" title="Batimento cardíaco"></span>
                   <button
                     className={`tiling-direction nf ${
                       output.glazewm.tilingDirection === 'horizontal'
