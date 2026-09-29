@@ -1,0 +1,82 @@
+{
+  "app": {
+    "latestVersion": "1.7.3",
+    "version": "1.7.3"
+  },
+  "id": "{BB5ADD4F-EB46-47DD-8A90-113896F520E4}",
+  "mods": {
+    "custom-corner-radius": {
+      "latestVersion": "1.3",
+      "version": "1.3"
+    },
+    "dark-menus": {
+      "latestVersion": "1.4.2",
+      "version": "1.4.2"
+    },
+    "explorer-details-better-file-sizes": {
+      "latestVersion": "1.5.1",
+      "version": "1.5.1"
+    },
+    "icon-resource-redirect": {
+      "latestVersion": "1.3",
+      "version": "1.3"
+    },
+    "internet-status-indicator": {
+      "latestVersion": "0.8.4",
+      "version": "0.8.4"
+    },
+    "macos-minimize-animation": {
+      "latestVersion": "3.1.5",
+      "version": "3.1.5"
+    },
+    "pinned-only-on-start-menu": {
+      "latestVersion": "1.0.1",
+      "version": "1.0.1"
+    },
+    "taskbar-dock-animation": {
+      "latestVersion": "1.9.2",
+      "version": "1.9.2"
+    },
+    "taskbar-icon-size": {
+      "latestVersion": "1.3.10",
+      "version": "1.3.10"
+    },
+    "taskbar-volume-control": {
+      "latestVersion": "1.3.1",
+      "version": "1.3.1"
+    },
+    "windows-11-file-explorer-styler": {
+      "latestVersion": "1.7",
+      "version": "1.7"
+    },
+    "windows-11-notification-center-styler": {
+      "latestVersion": "1.7",
+      "version": "1.7"
+    },
+    "windows-11-start-menu-styler": {
+      "latestVersion": "1.7",
+      "version": "1.7"
+    },
+    "windows-11-taskbar-styler": {
+      "latestVersion": "1.10",
+      "version": "1.10"
+    },
+    "action-center-active-display": {
+      "version": "1.1.1",
+      "latestVersion": "1.1.1"
+    },
+    "notifications-placement": {
+      "version": "1.2.4",
+      "latestVersion": "1.2.4"
+    },
+    "instant-taskbar-thumbnail-previews": {
+      "version": "1.0.0",
+      "latestVersion": "1.0.0"
+    },
+    "mac-magnifying-cursor": {
+      "version": "1.4.7",
+      "latestVersion": "1.4.7"
+    }
+  },
+  "os": "10.0.26200"
+}

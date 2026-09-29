@@ -7,5 +7,10 @@ my-topbar/scripts/*.log
 # Marketplace cache
 .marketplace/
 
-# Backups (já estão nos commits do git)
-backups/
+# Backups antigos do my-topbar (o conteúdo atual já está no topo do repo)
+backups/my-topbar_*/
+
+# Backups de config de apps externos (versionados de propósito)
+!backups/README.md
+!backups/windhawk/
+!backups/powertoys/
