@@ -575,8 +575,8 @@ body,
 }
 
 @keyframes coffee-glow {
-  0%, 100% { filter: drop-shadow(0 0 6px rgba(250 179 135 / 55%)); }
-  50%      { filter: drop-shadow(0 0 22px rgba(250 179 135 / 100%)); }
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(115 130 175 / 55%)); }
+  50%      { filter: drop-shadow(0 0 16px rgba(115 130 175 / 90%)); }
 }
 
 .coffee-wrapper {
@@ -584,7 +584,6 @@ body,
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
-  margin-right: 20px;
 }
 
 .coffee-steam {

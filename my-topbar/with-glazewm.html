@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=111" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=116" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -424,27 +424,12 @@
 
             <div className="center">
               <div className="center-left-group">
-                <span className="date-with-coffee">
-                  <div className="coffee-wrapper" title="☕ Café">
-                    <i
-                      className="nf nf-fa-coffee coffee-icon"
-                      style={{
-                        fontSize: 'calc(var(--icon-size) * 1.1)',
-                        color: '#fab387',
-                        marginRight: 0
-                      }}
-                    ></i>
-                    <span className="coffee-steam s1"></span>
-                    <span className="coffee-steam s2"></span>
-                    <span className="coffee-steam s3"></span>
-                  </div>
-                  <span
-                    className="date-text"
-                    title="Ver calendário"
-                    onClick={() => zebar.startWidgetPreset('calendar-popup', 'default')}
-                  >
-                    {output.date?.formatted?.replace('-feira', '')}
-                  </span>
+                <span
+                  className="date-text"
+                  title="Ver calendário"
+                  onClick={() => zebar.startWidgetPreset('calendar-popup', 'default')}
+                >
+                  {output.date?.formatted?.replace('-feira', '')}
                 </span>
               </div>
               <span className="separator"></span>
@@ -472,6 +457,19 @@
               )}
               <span className="hacker-sign" title="donkey_monkey">&gt;_ donkey_monkey</span>
               <span className="ecg-bridge" title="Batimento cardíaco"></span>
+              <div className="coffee-wrapper" title="☕ Café">
+                <i
+                  className="nf nf-fa-coffee coffee-icon"
+                  style={{
+                    fontSize: 'calc(var(--icon-size) * 1.1)',
+                    color: 'var(--icon-color-dark)',
+                    marginRight: 0
+                  }}
+                ></i>
+                <span className="coffee-steam s1"></span>
+                <span className="coffee-steam s2"></span>
+                <span className="coffee-steam s3"></span>
+              </div>
               {output.glazewm && (
                 <>
                   {output.glazewm.isPaused && (
