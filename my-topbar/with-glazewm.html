@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Custom styles. -->
-<link rel="stylesheet" type="text/css" href="./styles.css?v=116" />
+<link rel="stylesheet" type="text/css" href="./styles.css?v=117" />
 
     <!-- Allows React to be run buildless via "text/babel" script below. -->
     <script
@@ -168,6 +168,8 @@
         function getAppName(processName, title) {
           const proc = (processName || '').toLowerCase();
           const t = title || '';
+          // Zen Browser: mostrar 'Zen Browser' em todas as abas, independente do site
+          if (proc.includes('zen')) return 'Zen Browser';
           // PDF: exibir apenas 'PDF' (arquivo .pdf aberto em navegador ou leitor)
           if (/\.pdf\b/i.test(t)) return 'PDF';
           // Detectar sites pelo título (antes do parse geral)
