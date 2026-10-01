@@ -33,3 +33,34 @@ Pasta `powertoys/`. Contém `settings.json`.
 3. Copie `settings.json` para
    `C:\Users\SEU_USUARIO\AppData\Local\Microsoft\PowerToys\settings.json`.
 4. Abra o PowerToys.
+
+## Armadilhas conhecidas
+
+### ExplorerPatcher quebra a barra (conflito com Windhawk)
+
+**NÃO instale o ExplorerPatcher.** Ele está marcado com `winget pin add --id
+valinet.ExplorerPatcher` para nunca ser reinstalado/atualizado automaticamente.
+
+Histórico: em 01/10/2026, um `winget update --all` instalou o ExplorerPatcher
+(provavelmente como dependência de outro pacote) numa versão compilada para
+um build do Windows diferente do instalado. Ele passou a brigar com o
+Windhawk (que já faz toda a customização da taskbar via Taskbar Styler) e
+travou a barra por completo. Corrigido com:
+```powershell
+winget uninstall --id valinet.ExplorerPatcher
+winget pin add --id valinet.ExplorerPatcher
+```
+Se a barra quebrar de novo do nada, verifique primeiro se o ExplorerPatcher
+voltou (`winget list --id valinet.ExplorerPatcher`).
+
+### Janelas do GlazeWM menores que a tela depois de reiniciar o explorer.exe
+
+Se o `explorer.exe` for reiniciado (por qualquer motivo: crash, correção de
+mod, etc.) e as janelas do GlazeWM pararem de abrir em tela cheia — como se
+sobrasse uma faixa vazia onde ficaria a taskbar nativa —, rode:
+```powershell
+powershell -ExecutionPolicy Bypass -File C:\Users\Rodrigo\.glzr\zebar\my-topbar\scripts\fix-taskbar-workarea.ps1
+```
+Isso religa o auto-hide da taskbar nativa (forçando o Windows a liberar a
+área de trabalho presa) e manda o GlazeWM redesenhar as janelas. Detalhes da
+causa no cabeçalho do próprio script.
